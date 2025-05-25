@@ -27,7 +27,7 @@ twitter_username: "@D3adshotH8ck"
 github_username:  "Marcz1988"
 
 # Build settings
-theme: jekyll-theme-hacker
+#theme: jekyll-theme-hacker
 markdown: kramdown
 plugins:
   - jekyll-feed
