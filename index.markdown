@@ -7,6 +7,13 @@ title: "Home"
 
 This blog documents my journey from networking fundamentals to elite-level offensive security.
 
+<hr>
+<h2>My TryHackMe Progress</h2>
+<iframe 
+  src="https://tryhackme.com/api/v2/badges/public-profile?userPublicId=4649227" 
+  style="border:none; display:block; margin:auto;">
+</iframe>
+
 ## What You’ll Find Here
 
 - **CCNA** — Notes, labs, and gotchas as I prep for certification.
