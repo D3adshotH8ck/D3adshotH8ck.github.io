@@ -13,7 +13,7 @@ I just released a no-BS guide showing how hackers gather recon using public info
 
 ---
 
-## M-% What’s Inside:
+## What’s Inside:
 - 6 real OSINT tools hackers use daily
 - Commands for Linux & Windows
 - Google Dorking, Shodan, Wayback, and more
@@ -22,7 +22,7 @@ I just released a no-BS guide showing how hackers gather recon using public info
 
 ---
 
-## M-**Grab the eBook now on Gumroad:**  
+## Grab the eBook now on Gumroad:**  
 [https://d3adshot.gumroad.com/l/fuxlj](https://d3adshot.gumroad.com/l/fuxlj)
 
 ---
