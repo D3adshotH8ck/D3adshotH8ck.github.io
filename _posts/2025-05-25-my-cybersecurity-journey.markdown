@@ -17,4 +17,4 @@ I’ve officially started documenting my journey to becoming a world-class ethic
 This blog is for my future self and for anyone else walking this same path. Expect detailed walkthroughs, raw honesty, wins, and rants.
 
 Stay sharp. Follow along, and let’s get after it.  
-~ @Marcz1988 aka D3adshot
+D3adshot
