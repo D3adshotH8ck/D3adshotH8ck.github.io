@@ -1,26 +1,199 @@
 @import "tailwindcss";
 
+/* ── Design Tokens ──────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-void:          #04060a;
+  --bg-carbon:        #0a0e14;
+  --bg-elevated:      #11161f;
+  --neon-cyan:        #00e5ff;
+  --neon-cyan-soft:   #4dd0e1;
+  --neon-red:         #ff2a3d;
+  --neon-red-soft:    #ff5566;
+  --chrome:           #c8d0d8;
+  --text-primary:     #e8eef5;
+  --text-muted:       #6b7785;
+  --grid-line:        rgba(0, 229, 255, 0.08);
+
+  /* Shadows */
+  --glow-cyan:        0 0 20px rgba(0,229,255,0.15), 0 0 60px rgba(0,229,255,0.08);
+  --glow-cyan-md:     0 0 30px rgba(0,229,255,0.25), 0 0 80px rgba(0,229,255,0.12);
+  --glow-red:         0 0 20px rgba(255,42,61,0.2), 0 0 60px rgba(255,42,61,0.08);
+
+  /* Card glass */
+  --card-border:      rgba(0, 229, 255, 0.12);
+  --card-border-hover: rgba(0, 229, 255, 0.60);
+  --card-bg:          rgba(10, 14, 20, 0.85);
 }
 
+/* ── Tailwind theme bridge ──────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-void:       var(--bg-void);
+  --color-carbon:     var(--bg-carbon);
+  --color-elevated:   var(--bg-elevated);
+  --color-cyan:       var(--neon-cyan);
+  --color-cyan-soft:  var(--neon-cyan-soft);
+  --color-red-neo:    var(--neon-red);
+  --color-red-soft:   var(--neon-red-soft);
+  --color-chrome:     var(--chrome);
+  --color-primary:    var(--text-primary);
+  --color-muted:      var(--text-muted);
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-sans:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ── Base ───────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--bg-void);
+  color: var(--text-primary);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-void);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'ss01', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ── Selection ──────────────────────────────────────────────── */
+::selection {
+  background: rgba(0, 229, 255, 0.2);
+  color: var(--text-primary);
+}
+
+/* ── Focus visible ──────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--neon-cyan);
+  outline-offset: 2px;
+}
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-void);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 229, 255, 0.2);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 229, 255, 0.4);
+}
+
+/* ── Utility: glow text ─────────────────────────────────────── */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 60px rgba(0, 229, 255, 0.2);
+}
+
+.text-glow-red {
+  text-shadow: 0 0 20px rgba(255, 42, 61, 0.6), 0 0 60px rgba(255, 42, 61, 0.2);
+}
+
+/* ── Utility: glass card ────────────────────────────────────── */
+.glass-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  box-shadow: var(--glow-cyan), inset 0 1px 0 rgba(0,229,255,0.05);
+  transition: border-color 300ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.22,1,0.36,1);
+}
+
+.glass-card:hover {
+  border-color: var(--card-border-hover);
+  box-shadow: var(--glow-cyan-md), inset 0 1px 0 rgba(0,229,255,0.08);
+  transform: translateY(-4px);
+}
+
+/* ── Utility: scanlines ─────────────────────────────────────── */
+.scanlines {
+  position: relative;
+  overflow: hidden;
+}
+
+.scanlines::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.08) 2px,
+    rgba(0, 0, 0, 0.08) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* ── Marquee animation ──────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+/* ── Boot scan animation ────────────────────────────────────── */
+@keyframes boot-scan {
+  0%   { top: 0; opacity: 1; }
+  90%  { top: 100%; opacity: 1; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.boot-scan-line {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+  box-shadow: 0 0 12px var(--neon-cyan), 0 0 40px rgba(0,229,255,0.4);
+  animation: boot-scan 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+/* ── Counter underline draw-on ──────────────────────────────── */
+@keyframes draw-line {
+  from { width: 0; }
+  to   { width: 100%; }
+}
+
+.stat-underline {
+  display: block;
+  height: 1px;
+  background: var(--neon-cyan);
+  width: 0;
+  box-shadow: 0 0 8px var(--neon-cyan);
+  transition: width 600ms cubic-bezier(0.22,1,0.36,1);
+}
+
+.stat-done .stat-underline {
+  width: 100%;
+}
+
+/* ── Reduced motion ─────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .boot-scan-line {
+    animation: none;
+  }
+
+  .glass-card:hover {
+    transform: none;
+  }
 }
