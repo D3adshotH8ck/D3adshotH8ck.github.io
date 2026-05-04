@@ -253,7 +253,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
               (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(0,229,255,0.2)";
             }}
           >
-            {tool.id === "06" ? "Explore →" : tool.stack.includes("Guide") || tool.stack.includes("eBOOK") ? "Read →" : "View Source →"}
+            {tool.id === "03" ? "Explore →" : tool.stack.includes("Guide") || tool.stack.includes("eBOOK") ? "Read →" : "View Source →"}
           </a>
           {tool.docsHref && (
             <a
@@ -346,13 +346,14 @@ export default function Arsenal() {
           />
         </div>
 
-        {/* Two-tile grid: D3adphish (2/3) + GitHub (1/3) */}
+        {/* Three-tile grid: D3adphish (2/3) + stacked OwlSec & GitHub (1/3) */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           <div className="lg:col-span-2">
             <Tile tool={tools[0]} index={0} featured />
           </div>
-          <div className="h-full">
+          <div className="flex flex-col gap-4">
             <Tile tool={tools[1]} index={1} stretch />
+            <Tile tool={tools[2]} index={2} />
           </div>
         </div>
       </div>

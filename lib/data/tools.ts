@@ -26,6 +26,17 @@ export const tools: Tool[] = [
   },
   {
     id: "02",
+    title: "OwlSec Tool",
+    tag: "[ RECON SUITE ]",
+    tagColor: "cyan",
+    description:
+      "Terminal-based recon suite built for the OwlSec community. WHOIS lookups, three Nmap scan profiles, passive/active subdomain enumeration via Subfinder & Amass, live host detection with HTTPX, and JS secret extraction — all from one interactive menu.",
+    stack: ["Python 3", "Nmap", "Subfinder", "Amass", "HTTPX"],
+    href: "https://github.com/D3adshotH8ck/owlsec-tool",
+    bgVariant: "grid",
+  },
+  {
+    id: "03",
     title: "More on GitHub →",
     tag: "[ EXPLORE ]",
     tagColor: "cyan",
