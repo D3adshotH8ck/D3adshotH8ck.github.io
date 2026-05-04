@@ -17,7 +17,12 @@ function FeaturedBg() {
 
     let animId: number;
 
-    interface Node { x: number; y: number; vx: number; vy: number }
+    interface Node {
+      x: number;
+      y: number;
+      vx: number;
+      vy: number;
+    }
     const nodes: Node[] = Array.from({ length: 28 }, () => ({
       x: Math.random() * canvas.offsetWidth,
       y: Math.random() * canvas.offsetHeight,
@@ -128,12 +133,16 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
         "glass-card group relative rounded-lg overflow-hidden cursor-pointer flex flex-col",
         "transition-[transform,border-color,box-shadow]",
         featured ? "min-h-105" : "min-h-50",
-        stretch && "h-full"
+        stretch && "h-full",
       )}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay: index * 0.07, ease: [0.22, 1, 0.36, 1] }}
+      transition={{
+        duration: 0.6,
+        delay: index * 0.07,
+        ease: [0.22, 1, 0.36, 1],
+      }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       style={{ willChange: "transform" }}
@@ -200,7 +209,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
         <h3
           className={cn(
             "font-display font-bold leading-tight",
-            featured ? "text-3xl" : "text-xl"
+            featured ? "text-3xl" : "text-xl",
           )}
           style={{ color: "var(--text-primary)" }}
         >
@@ -247,13 +256,19 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
               boxShadow: "0 0 16px rgba(0,229,255,0.2)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 28px rgba(0,229,255,0.45)";
+              (e.currentTarget as HTMLElement).style.boxShadow =
+                "0 0 28px rgba(0,229,255,0.45)";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow = "0 0 16px rgba(0,229,255,0.2)";
+              (e.currentTarget as HTMLElement).style.boxShadow =
+                "0 0 16px rgba(0,229,255,0.2)";
             }}
           >
-            {tool.id === "03" ? "Explore →" : tool.stack.includes("Guide") || tool.stack.includes("eBOOK") ? "Read →" : "View Source →"}
+            {tool.id === "03"
+              ? "Explore →"
+              : tool.stack.includes("Guide") || tool.stack.includes("eBOOK")
+                ? "Read →"
+                : "View Source →"}
           </a>
           {tool.docsHref && (
             <a
@@ -314,7 +329,7 @@ export default function Arsenal() {
         <div ref={headingRef} className="flex items-end gap-6 mb-14">
           <div className="flex flex-col gap-2">
             <motion.span
-              className="font-mono text-xs tracking-widest uppercase"
+              className="font-orbitron text-xs tracking-widest uppercase"
               style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
@@ -326,10 +341,17 @@ export default function Arsenal() {
             <motion.h2
               id="arsenal-heading"
               className="font-display font-bold leading-none"
-              style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--text-primary)" }}
+              style={{
+                fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                color: "var(--text-primary)",
+              }}
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               TOOLS &amp; PROJECTS
             </motion.h2>

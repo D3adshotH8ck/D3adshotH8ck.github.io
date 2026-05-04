@@ -52,23 +52,22 @@ export default function Stats() {
   return (
     <section
       id="stats"
-      className="relative w-full py-16 overflow-hidden"
-      style={{ background: "rgba(10, 14, 20, 0.4)" }}
+      className="relative w-full py-16"
+      style={{ background: "transparent" }}
       aria-label="Statistics"
     >
-
-
       <div
         ref={ref}
-        className="relative z-10 mx-auto px-6 lg:px-20 grid grid-cols-1 sm:grid-cols-2 gap-10 lg:gap-0 max-w-2xl"
+        className="mx-auto px-6 lg:px-20 flex flex-col sm:flex-row items-center justify-center gap-6"
       >
         {stats.map((stat, i) => (
           <motion.div
             key={stat.label}
-            className="flex flex-col gap-3 sm:px-10"
-            initial={{ opacity: 0, y: 20 }}
+            className="glass-card flex flex-col gap-4 rounded-xl"
+            style={{ padding: "2rem 3rem", minWidth: 220 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ duration: 0.6, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
           >
             {/* Big number */}
             <span
@@ -85,12 +84,12 @@ export default function Stats() {
               style={{ background: "var(--neon-cyan)", boxShadow: "0 0 8px var(--neon-cyan)" }}
               initial={{ scaleX: 0 }}
               animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
-              transition={{ duration: 0.5, delay: i * 0.1 + 1.2, ease: [0.22, 1, 0.36, 1] }}
+              transition={{ duration: 0.5, delay: i * 0.12 + 1.2, ease: [0.22, 1, 0.36, 1] }}
             />
 
             {/* Label */}
             <span
-              className="font-mono text-xs tracking-widest uppercase"
+              className="font-orbitron text-xs tracking-widest uppercase"
               style={{ color: "var(--text-muted)" }}
             >
               {stat.label}

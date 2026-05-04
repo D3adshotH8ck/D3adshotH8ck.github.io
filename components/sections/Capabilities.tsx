@@ -111,7 +111,7 @@ export default function Capabilities() {
         <div className="flex items-end gap-6 mb-14">
           <div className="flex flex-col gap-2">
             <motion.span
-              className="font-mono text-xs tracking-widest uppercase"
+              className="font-orbitron text-xs tracking-widest uppercase"
               style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}

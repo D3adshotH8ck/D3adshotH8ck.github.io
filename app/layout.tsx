@@ -1,7 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono, Orbitron } from "next/font/google";
 import ParticlesBackground from "@/components/effects/ParticlesBackground";
 import "./globals.css";
+
+const orbitron = Orbitron({
+  variable: "--font-orbitron",
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: "swap",
+});
 
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-display",
@@ -25,6 +32,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
+  icons: { icon: "/Avatar2.png" },
   title: "D3ADSHOT — Ethical Hacker & Bug Bounty Hunter",
   description:
     "Bug bounty hunter and offensive security researcher based in South Africa. Finding what shouldn't be there — on Bugcrowd, HackerOne, Intigriti, and YesWeHack.",
@@ -50,7 +58,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} h-full`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable} ${orbitron.variable} h-full`}
     >
       <body className="min-h-full flex flex-col antialiased relative">
         <ParticlesBackground />

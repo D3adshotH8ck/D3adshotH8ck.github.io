@@ -1,25 +1,132 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 
-interface LoadoutItem {
+// ─── Tools ───────────────────────────────────────────────────────────────────
+
+interface Tool {
   name: string;
-  role: string;
-  /* SVG path data or short text logo */
-  symbol: string;
-  isText?: boolean;
+  accentColor: string;
+  logo: React.ReactNode;
 }
 
-const items: LoadoutItem[] = [
-  { name: "Kali Linux",    role: "Daily driver",           symbol: "K" },
-  { name: "Parrot OS",     role: "Recon & analysis",       symbol: "P" },
-  { name: "Burp Suite Pro",role: "Web app testing",        symbol: "B", isText: true },
-  { name: "Hyprland",      role: "Tiling WM",              symbol: "H" },
-  { name: "fish shell",    role: "Shell environment",      symbol: "~" },
-  { name: "Mullvad VPN",   role: "Privacy layer",          symbol: "M" },
-  { name: "Claude Code",   role: "AI pair programmer",     symbol: "CC", isText: true },
+const CDN = "https://cdn.simpleicons.org";
+
+const tools: Tool[] = [
+  {
+    name: "Kali Linux",
+    accentColor: "#4a9eda",
+    logo: <img src={`${CDN}/kalilinux/4a9eda`} alt="Kali Linux" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "Burp Suite Pro",
+    accentColor: "#FF6633",
+    logo: (
+      <svg viewBox="0 0 100 100" width="58" height="58" fill="none" stroke="#FF6633" strokeWidth="5">
+        <circle cx="50" cy="50" r="44" />
+        <circle cx="50" cy="50" r="27" />
+        <circle cx="50" cy="50" r="11" fill="#FF6633" />
+        <line x1="50" y1="6"  x2="50" y2="23" strokeWidth="4" />
+        <line x1="50" y1="77" x2="50" y2="94" strokeWidth="4" />
+        <line x1="6"  y1="50" x2="23" y2="50" strokeWidth="4" />
+        <line x1="77" y1="50" x2="94" y2="50" strokeWidth="4" />
+      </svg>
+    ),
+  },
+  {
+    name: "React",
+    accentColor: "#61DAFB",
+    logo: <img src={`${CDN}/react/61dafb`} alt="React" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "HTML5",
+    accentColor: "#E34F26",
+    logo: <img src={`${CDN}/html5/e34f26`} alt="HTML5" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "Tailwind CSS",
+    accentColor: "#06B6D4",
+    logo: <img src={`${CDN}/tailwindcss/06b6d4`} alt="Tailwind CSS" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "JavaScript",
+    accentColor: "#F7DF1E",
+    logo: <img src={`${CDN}/javascript/f7df1e`} alt="JavaScript" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "TypeScript",
+    accentColor: "#3178C6",
+    logo: <img src={`${CDN}/typescript/3178c6`} alt="TypeScript" width={58} height={58} style={{ objectFit: "contain" }} />,
+  },
+  {
+    name: "AI Pipelines",
+    accentColor: "#00E5FF",
+    logo: (
+      <svg viewBox="0 0 100 100" width="58" height="58" fill="none">
+        <circle cx="12" cy="20" r="8" fill="#00E5FF" />
+        <circle cx="12" cy="50" r="8" fill="#00E5FF" />
+        <circle cx="12" cy="80" r="8" fill="#00E5FF" />
+        <circle cx="50" cy="35" r="8" fill="#00E5FF" />
+        <circle cx="50" cy="65" r="8" fill="#00E5FF" />
+        <circle cx="88" cy="50" r="8" fill="#00E5FF" />
+        <line x1="20" y1="20" x2="42" y2="35" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="20" y1="50" x2="42" y2="35" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="20" y1="80" x2="42" y2="35" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="20" y1="20" x2="42" y2="65" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="20" y1="50" x2="42" y2="65" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="20" y1="80" x2="42" y2="65" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="58" y1="35" x2="80" y2="50" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+        <line x1="58" y1="65" x2="80" y2="50" stroke="#00E5FF" strokeWidth="2" opacity="0.5" />
+      </svg>
+    ),
+  },
+  {
+    name: "OSINT Collection",
+    accentColor: "#FF2A3D",
+    logo: (
+      <svg viewBox="0 0 100 68" width="58" height="40" fill="none">
+        <path d="M4 34 Q50 4 96 34 Q50 64 4 34 Z" stroke="#FF2A3D" strokeWidth="4" />
+        <circle cx="50" cy="34" r="14" stroke="#FF2A3D" strokeWidth="4" />
+        <circle cx="50" cy="34" r="5" fill="#FF2A3D" />
+      </svg>
+    ),
+  },
 ];
+
+// ─── Card ─────────────────────────────────────────────────────────────────────
+
+function ToolCard({ tool }: { tool: Tool }) {
+  return (
+    <div
+      className="flex flex-col items-center justify-center gap-4 shrink-0"
+      style={{
+        width: 160,
+        height: 160,
+        marginRight: 20,
+        background: "rgba(10, 14, 20, 0.55)",
+        border: `1px solid ${tool.accentColor}28`,
+        borderRadius: 14,
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        boxShadow: `0 4px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04)`,
+      }}
+    >
+      <div style={{ width: 58, height: 58, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        {tool.logo}
+      </div>
+      <span
+        className="font-mono uppercase text-center leading-tight px-2"
+        style={{ fontSize: "0.6rem", letterSpacing: "0.1em", color: tool.accentColor, opacity: 0.8 }}
+      >
+        {tool.name}
+      </span>
+    </div>
+  );
+}
+
+// ─── Section ──────────────────────────────────────────────────────────────────
 
 export default function Loadout() {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,16 +135,16 @@ export default function Loadout() {
   return (
     <section
       id="loadout"
-      className="w-full py-24"
+      className="w-full py-20"
       style={{ background: "transparent", borderTop: "1px solid var(--grid-line)" }}
       aria-labelledby="loadout-heading"
     >
-      <div ref={ref} className="max-w-350 mx-auto px-6 lg:px-20">
-        {/* Header */}
-        <div className="flex items-end gap-6 mb-14">
+      {/* Header — constrained */}
+      <div ref={ref} className="max-w-350 mx-auto px-6 lg:px-20 mb-12">
+        <div className="flex items-end gap-6">
           <div className="flex flex-col gap-2">
             <motion.span
-              className="font-mono text-xs tracking-widest uppercase"
+              className="font-orbitron text-xs tracking-widest uppercase"
               style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
@@ -65,85 +172,28 @@ export default function Loadout() {
             aria-hidden="true"
           />
         </div>
+      </div>
 
-        {/* Descriptor */}
-        <motion.p
-          className="font-mono text-sm mb-10 max-w-md"
-          style={{ color: "var(--text-muted)" }}
-          initial={{ opacity: 0 }}
-          animate={inView ? { opacity: 1 } : {}}
-          transition={{ delay: 0.4 }}
+      {/* Carousel — full bleed with edge fade */}
+      <motion.div
+        className="relative w-full overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ duration: 0.8, delay: 0.5 }}
+        style={{
+          maskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+          WebkitMaskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
+        }}
+      >
+        <div
+          className="flex marquee-track"
+          style={{ animationDuration: "34s" }}
         >
-          Multi-VM operator. Riced to perfection.
-        </motion.p>
-
-        {/* Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {items.map((item, i) => (
-            <motion.div
-              key={item.name}
-              className="group relative flex flex-col items-center gap-3 p-5 rounded-sm cursor-default"
-              style={{
-                background: "rgba(10, 14, 20, 0.4)",
-                border: "1px solid var(--grid-line)",
-                transition: "border-color 250ms, background 250ms",
-              }}
-              initial={{ opacity: 0, y: 16 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(0,229,255,0.35)";
-                el.style.background = "rgba(0,229,255,0.04)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "var(--grid-line)";
-                el.style.background = "var(--bg-carbon)";
-              }}
-            >
-              {/* Symbol / logo placeholder — greyscale to color on hover */}
-              <div
-                className="w-10 h-10 rounded-sm flex items-center justify-center font-display font-bold text-lg transition-all duration-250"
-                style={{
-                  background: "rgba(255,255,255,0.04)",
-                  color: "var(--text-muted)",
-                  filter: "grayscale(1)",
-                  transition: "filter 250ms, color 250ms",
-                }}
-                onMouseEnter={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.filter = "grayscale(0)";
-                  el.style.color = "var(--neon-cyan)";
-                }}
-                onMouseLeave={(e) => {
-                  const el = e.currentTarget as HTMLElement;
-                  el.style.filter = "grayscale(1)";
-                  el.style.color = "var(--text-muted)";
-                }}
-                aria-hidden="true"
-              >
-                {item.symbol}
-              </div>
-
-              <div className="text-center">
-                <p
-                  className="font-mono text-xs font-medium leading-tight"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  {item.name}
-                </p>
-                <p
-                  className="font-mono text-xs mt-0.5"
-                  style={{ color: "var(--text-muted)", fontSize: "0.65rem" }}
-                >
-                  {item.role}
-                </p>
-              </div>
-            </motion.div>
+          {[...tools, ...tools].map((tool, i) => (
+            <ToolCard key={i} tool={tool} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </section>
   );
 }
