@@ -147,8 +147,18 @@ body {
   to   { transform: translateX(-50%); }
 }
 
+@keyframes marquee-quad {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-25%); }
+}
+
 .marquee-track {
   animation: marquee 28s linear infinite;
+  will-change: transform;
+}
+
+.marquee-track-quad {
+  animation: marquee-quad 34s linear infinite;
   will-change: transform;
 }
 
@@ -190,9 +200,16 @@ body {
   width: 100%;
 }
 
+/* ── Whoami breadcrumb pulse ────────────────────────────────── */
+@keyframes whoami-hint {
+  0%, 100% { opacity: 0.35; }
+  50%       { opacity: 0.7; }
+}
+
 /* ── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
+  .marquee-track-quad,
   .boot-scan-line {
     animation: none;
   }

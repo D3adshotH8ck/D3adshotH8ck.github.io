@@ -185,11 +185,8 @@ export default function Loadout() {
           WebkitMaskImage: "linear-gradient(to right, transparent, black 6%, black 94%, transparent)",
         }}
       >
-        <div
-          className="flex marquee-track"
-          style={{ animationDuration: "34s" }}
-        >
-          {[...tools, ...tools].map((tool, i) => (
+        <div className="flex marquee-track-quad">
+          {[...tools, ...tools, ...tools, ...tools].map((tool, i) => (
             <ToolCard key={i} tool={tool} />
           ))}
         </div>
