@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 
 // ─── Matrix intro ─────────────────────────────────────────────────────────────
@@ -54,11 +55,11 @@ const TERMINAL_LINES: Line[] = [
 ];
 
 const COLOR: Record<Line["color"], string> = {
-  cyan:    "#00e5ff",
+  cyan:    "#cc0000",
   red:     "#ff2a3d",
   primary: "#e8eef5",
   muted:   "#6b7785",
-  dim:     "rgba(0,229,255,0.25)",
+  dim:     "rgba(180,0,0,0.3)",
   blink:   "#6b7785",
 };
 
@@ -146,15 +147,15 @@ export default function WhoamiEgg() {
               alignItems: "center",
               justifyContent: "center",
               backgroundImage:
-                "repeating-linear-gradient(0deg, rgba(0,229,255,0.012) 0px, rgba(0,229,255,0.012) 1px, transparent 1px, transparent 3px)",
+                "repeating-linear-gradient(0deg, rgba(180,0,0,0.015) 0px, rgba(180,0,0,0.015) 1px, transparent 1px, transparent 3px)",
             }}
           >
             {/* Ambient green/cyan glow shifts between phases */}
             <motion.div
               animate={{
                 background: phase === "matrix"
-                  ? "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,255,65,0.05) 0%, transparent 70%)"
-                  : "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(0,229,255,0.04) 0%, transparent 70%)",
+                  ? "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,200,60,0.04) 0%, transparent 70%)"
+                  : "radial-gradient(ellipse 60% 50% at 50% 50%, rgba(160,0,0,0.05) 0%, transparent 70%)",
               }}
               transition={{ duration: 1.2 }}
               style={{ position: "absolute", inset: 0, pointerEvents: "none" }}
@@ -232,7 +233,7 @@ function MatrixContent({
             {hasHandle ? (
               <>
                 {line.text.split("D3ADSHOT")[0]}
-                <span style={{ color: "#00e5ff", textShadow: "0 0 20px rgba(0,229,255,0.7), 0 0 60px rgba(0,229,255,0.3)" }}>
+                <span style={{ color: "#cc0000", textShadow: "0 0 20px rgba(200,0,0,0.8), 0 0 60px rgba(180,0,0,0.4)" }}>
                   D3ADSHOT
                 </span>
                 {line.text.split("D3ADSHOT")[1]}
@@ -248,6 +249,76 @@ function MatrixContent({
 }
 
 // ─── Terminal phase content ───────────────────────────────────────────────────
+function PhotoPanel() {
+  return (
+    <div
+      style={{
+        width: 180,
+        flexShrink: 0,
+        display: "flex",
+        flexDirection: "column",
+        gap: "0.75rem",
+        paddingRight: "1.25rem",
+        borderRight: "1px solid rgba(180,0,0,0.1)",
+      }}
+    >
+      {/* Portrait frame */}
+      <div style={{ position: "relative", width: "100%", height: 204 }}>
+        {/* Corner brackets */}
+        {(["tl","tr","bl","br"] as const).map((c) => {
+          const b: React.CSSProperties = { position:"absolute", width:14, height:14, border:"1.5px solid rgba(204,0,0,0.6)" };
+          const m: Record<string, React.CSSProperties> = {
+            tl:{ top:0,   left:0,   borderRight:"none", borderBottom:"none" },
+            tr:{ top:0,   right:0,  borderLeft:"none",  borderBottom:"none" },
+            bl:{ bottom:0,left:0,   borderRight:"none", borderTop:"none"    },
+            br:{ bottom:0,right:0,  borderLeft:"none",  borderTop:"none"    },
+          };
+          return <div key={c} style={{ ...b, ...m[c] }} aria-hidden="true" />;
+        })}
+
+        <Image
+          src="/Deadshot1.png"
+          alt="D3ADSHOT identity"
+          fill
+          unoptimized
+          style={{
+            objectFit: "contain",
+            objectPosition: "center top",
+            filter: "drop-shadow(0 0 20px rgba(200,0,0,0.5))",
+          }}
+        />
+
+        {/* Bottom fade */}
+        <div
+          style={{
+            position: "absolute", bottom: 0, left: 0, right: 0,
+            height: "38%",
+            background: "linear-gradient(to bottom, transparent, rgba(10,14,20,0.96))",
+            zIndex: 10,
+          }}
+          aria-hidden="true"
+        />
+      </div>
+
+      {/* Identity meta */}
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
+        <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.55rem", letterSpacing:"0.16em", color:"rgba(204,0,0,0.45)", userSelect:"none" }}>
+          // IDENTITY FILE
+        </span>
+        <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.72rem", letterSpacing:"0.12em", color:"#e8eef5", fontWeight:600 }}>
+          D3ADSHOT
+        </span>
+        <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.58rem", letterSpacing:"0.1em", color:"rgba(107,119,133,0.75)" }}>
+          CLEARANCE: OVERRIDE
+        </span>
+        <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.58rem", letterSpacing:"0.1em", color:"rgba(255,42,61,0.7)", marginTop:"0.25rem" }}>
+          ● ACTIVE
+        </span>
+      </div>
+    </div>
+  );
+}
+
 function TerminalContent({
   lines,
   shownCount,
@@ -265,15 +336,16 @@ function TerminalContent({
       transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
       onClick={(e) => e.stopPropagation()}
       style={{
-        width: "min(720px, 92vw)",
+        width: "min(940px, 96vw)",
         maxHeight: "80vh",
-        overflowY: "auto",
-        padding: "2rem 2.5rem",
+        display: "flex",
+        flexDirection: "column",
+        padding: "1.75rem 2rem",
         background: "rgba(10,14,20,0.92)",
-        border: "1px solid rgba(0,229,255,0.18)",
+        border: "1px solid rgba(180,0,0,0.18)",
         borderRadius: 8,
         boxShadow:
-          "0 0 60px rgba(0,229,255,0.08), 0 0 120px rgba(0,229,255,0.04), inset 0 1px 0 rgba(255,255,255,0.04)",
+          "0 0 60px rgba(180,0,0,0.08), 0 0 120px rgba(180,0,0,0.04), inset 0 1px 0 rgba(255,255,255,0.04)",
         backdropFilter: "blur(24px)",
         WebkitBackdropFilter: "blur(24px)",
       }}
@@ -286,7 +358,8 @@ function TerminalContent({
           gap: 8,
           marginBottom: "1.5rem",
           paddingBottom: "1rem",
-          borderBottom: "1px solid rgba(0,229,255,0.1)",
+          borderBottom: "1px solid rgba(180,0,0,0.12)",
+          flexShrink: 0,
         }}
       >
         <div
@@ -294,14 +367,14 @@ function TerminalContent({
           onClick={onClose}
         />
         <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#f7df1e", opacity: 0.5 }} />
-        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#00e5ff", opacity: 0.4 }} />
+        <div style={{ width: 10, height: 10, borderRadius: "50%", background: "#cc0000", opacity: 0.4 }} />
         <span
           style={{
             marginLeft: 12,
             fontFamily: "var(--font-mono), monospace",
             fontSize: "0.7rem",
             letterSpacing: "0.12em",
-            color: "rgba(0,229,255,0.35)",
+            color: "rgba(180,0,0,0.45)",
             userSelect: "none",
           }}
         >
@@ -309,22 +382,30 @@ function TerminalContent({
         </span>
       </div>
 
-      {/* Lines */}
-      <div style={{ fontFamily: "var(--font-mono), monospace", fontSize: "0.78rem", lineHeight: 1.9 }}>
-        {lines.slice(0, shownCount).map((line, i) => (
-          <div
-            key={i}
-            style={{
-              color: COLOR[line.color],
-              whiteSpace: "pre",
-              minHeight: "1.4em",
-              letterSpacing: line.color === "dim" ? "0.05em" : "0.02em",
-            }}
-          >
-            {line.color === "blink" ? <BlinkLine text={line.text} /> : line.text}
-          </div>
-        ))}
-        {shownCount > 0 && shownCount < lines.length && <BlinkCursor />}
+      {/* Dossier body: photo left + terminal right */}
+      <div style={{ display: "flex", gap: "1.5rem", flex: 1, overflow: "hidden", minHeight: 0 }}>
+        {/* Photo panel — hidden on narrow viewports */}
+        <div className="hidden sm:flex" style={{ display: undefined }}>
+          <PhotoPanel />
+        </div>
+
+        {/* Terminal lines — scrollable */}
+        <div style={{ flex: 1, overflowY: "auto", fontFamily: "var(--font-mono), monospace", fontSize: "0.78rem", lineHeight: 1.9 }}>
+          {lines.slice(0, shownCount).map((line, i) => (
+            <div
+              key={i}
+              style={{
+                color: COLOR[line.color],
+                whiteSpace: "pre",
+                minHeight: "1.4em",
+                letterSpacing: line.color === "dim" ? "0.05em" : "0.02em",
+              }}
+            >
+              {line.color === "blink" ? <BlinkLine text={line.text} /> : line.text}
+            </div>
+          ))}
+          {shownCount > 0 && shownCount < lines.length && <BlinkCursor />}
+        </div>
       </div>
     </motion.div>
   );
@@ -344,11 +425,11 @@ function CornerPrompt({ hidden }: { hidden: boolean }) {
         fontFamily: "var(--font-mono), monospace",
         fontSize: "0.72rem",
         letterSpacing: "0.1em",
-        color: "#00e5ff",
+        color: "#cc0000",
         userSelect: "none",
         cursor: "default",
         whiteSpace: "nowrap",
-        textShadow: "0 0 10px rgba(0,229,255,0.6)",
+        textShadow: "0 0 10px rgba(200,0,0,0.7)",
         animation: "whoami-hint 4s ease-in-out infinite",
       }}
     >
@@ -364,7 +445,7 @@ function BlinkCursor() {
     const t = setInterval(() => setOn((v) => !v), 530);
     return () => clearInterval(t);
   }, []);
-  return <span style={{ color: "#00e5ff", opacity: on ? 1 : 0, userSelect: "none" }}>█</span>;
+  return <span style={{ color: "#cc0000", opacity: on ? 1 : 0, userSelect: "none" }}>█</span>;
 }
 
 function BlinkLine({ text }: { text: string }) {

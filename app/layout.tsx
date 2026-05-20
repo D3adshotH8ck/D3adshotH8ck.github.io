@@ -32,7 +32,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  icons: { icon: "/Avatar2.png" },
+  icons: { icon: "/Deadshot1.png" },
   title: "D3ADSHOT — Ethical Hacker & Bug Bounty Hunter",
   description:
     "Bug bounty hunter and offensive security researcher based in South Africa. Finding what shouldn't be there — on Bugcrowd, HackerOne, Intigriti, and YesWeHack.",
@@ -42,6 +42,20 @@ export const metadata: Metadata = {
     title: "D3ADSHOT — Ethical Hacker & Bug Bounty Hunter",
     description: "Bug bounty hunter and offensive security researcher. I find what shouldn't be there.",
     type: "website",
+    images: [
+      {
+        url: "/Deadshot1.png",
+        width: 1920,
+        height: 2180,
+        alt: "D3ADSHOT — Ethical Hacker & Bug Bounty Hunter",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "D3ADSHOT — Ethical Hacker & Bug Bounty Hunter",
+    description: "Bug bounty hunter and offensive security researcher. I find what shouldn't be there.",
+    images: ["/Deadshot1.png"],
   },
 };
 

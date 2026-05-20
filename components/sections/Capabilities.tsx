@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
@@ -6,15 +6,15 @@ import { capabilities } from "@/lib/data/capabilities";
 
 function CapabilityCard({ cap, index }: { cap: (typeof capabilities)[number]; index: number }) {
   const isCyan = cap.accentColor === "cyan";
-  const accentVar  = isCyan ? "var(--neon-cyan)"      : "var(--neon-red)";
-  const accentSoft = isCyan ? "var(--neon-cyan-soft)"  : "var(--neon-red-soft)";
-  const borderBase = isCyan ? "rgba(0,229,255,0.12)"   : "rgba(255,42,61,0.12)";
-  const borderHover= isCyan ? "rgba(0,229,255,0.5)"    : "rgba(255,42,61,0.45)";
+  const accentVar  = isCyan ? "var(--accent)"      : "var(--neon-red)";
+  const accentSoft = isCyan ? "var(--accent-soft)"  : "var(--neon-red-soft)";
+  const borderBase = isCyan ? "rgba(204,0,0,0.12)"     : "rgba(255,42,61,0.12)";
+  const borderHover= isCyan ? "rgba(204,0,0,0.5)"      : "rgba(255,42,61,0.45)";
   const glowBase   = isCyan
-    ? "0 0 20px rgba(0,229,255,0.08), inset 0 1px 0 rgba(0,229,255,0.05)"
+    ? "0 0 20px rgba(204,0,0,0.08), inset 0 1px 0 rgba(204,0,0,0.05)"
     : "0 0 20px rgba(255,42,61,0.08), inset 0 1px 0 rgba(255,42,61,0.05)";
   const glowHover  = isCyan
-    ? "0 0 40px rgba(0,229,255,0.15), inset 0 1px 0 rgba(0,229,255,0.08)"
+    ? "0 0 40px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.08)"
     : "0 0 40px rgba(255,42,61,0.12), inset 0 1px 0 rgba(255,42,61,0.08)";
 
   return (
@@ -112,7 +112,7 @@ export default function Capabilities() {
           <div className="flex flex-col gap-2">
             <motion.span
               className="font-orbitron text-xs tracking-widest uppercase"
-              style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
+              style={{ color: "var(--accent)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
               transition={{ duration: 0.5 }}

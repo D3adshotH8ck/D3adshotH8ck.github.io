@@ -1,44 +1,146 @@
-"use client";
+﻿"use client";
 
 import Image from "next/image";
-import { useRef, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import GridBackground from "./GridBackground";
+import MaskScene from "./MaskScene";
 
 const PLATFORMS = ["BUGCROWD", "HACKERONE", "INTIGRITI", "YESWEHACK", "OWLSEC"];
 const marqueeText = Array(4).fill(PLATFORMS).flat();
 
+const HUD_LINES = [
+  { label: "SUBJECT",    value: "D3ADSHOT",        color: "var(--accent-soft)" },
+  { label: "STATUS",     value: "HUNTING",          color: "var(--accent)" },
+  { label: "THREAT_LVL", value: "CRITICAL",         color: "var(--neon-red)" },
+  { label: "SIG",        value: "7A:4F:C2:D3:B7",   color: "var(--text-muted)" },
+];
+
+const HUD_LINES_LEFT = [
+  { label: "NET_STATUS",   value: "ACTIVE",          color: "var(--accent)" },
+  { label: "ENC_TYPE",     value: "AES-256-GCM",     color: "var(--text-muted)" },
+  { label: "LAST_BREACH",  value: "[REDACTED]",      color: "var(--neon-red)" },
+  { label: "PLATFORMS",    value: "04 ACTIVE",       color: "var(--accent-soft)" },
+];
+
+const HUD_RETICLE_LINES = [
+  { label: "BIOMETRIC",    value: "CONFIRMED" },
+  { label: "CLEARANCE",    value: "ALPHA-OVERRIDE" },
+  { label: "MATCH",        value: "99.7%" },
+];
+
+function HudCorner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
+  const base: React.CSSProperties = { position: "absolute", width: 20, height: 20, border: "1.5px solid rgba(204,0,0,0.65)" };
+  const corners: Record<string, React.CSSProperties> = {
+    tl: { top: 0,    left: 0,   borderRight: "none", borderBottom: "none" },
+    tr: { top: 0,    right: 0,  borderLeft:  "none", borderBottom: "none" },
+    bl: { bottom: 0, left: 0,   borderRight: "none", borderTop:    "none" },
+    br: { bottom: 0, right: 0,  borderLeft:  "none", borderTop:    "none" },
+  };
+  return <div style={{ ...base, ...corners[pos] }} aria-hidden="true" />;
+}
+
 export default function Hero() {
-  const mouseX = useRef(0);
-  const mouseY = useRef(0);
-  const [booted, setBooted] = useState(false);
+  const [booted,   setBooted]   = useState(false);
+  const [scanning, setScanning] = useState(false);
+  const [locked,   setLocked]   = useState(false);
 
-  /* Track cursor normalised -1..1 */
   useEffect(() => {
-    const onMove = (e: MouseEvent) => {
-      mouseX.current = (e.clientX / window.innerWidth - 0.5) * 2;
-      mouseY.current = (e.clientY / window.innerHeight - 0.5) * 2;
-    };
-    window.addEventListener("mousemove", onMove, { passive: true });
-    return () => window.removeEventListener("mousemove", onMove);
+    const t = setTimeout(() => setBooted(true), 700);
+    return () => clearTimeout(t);
   }, []);
 
-  /* Boot sequence — reveal after scan finishes */
   useEffect(() => {
-    const id = setTimeout(() => setBooted(true), 700);
-    return () => clearTimeout(id);
-  }, []);
+    if (!booted) return;
+    const t1 = setTimeout(() => setScanning(true),  1400);
+    const t2 = setTimeout(() => { setScanning(false); setLocked(true); }, 3200);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [booted]);
 
   return (
     <section
       className="relative w-full min-h-screen flex flex-col overflow-hidden"
-      style={{ background: "transparent" }}
+      style={{ background: "#04060a" }}
       aria-label="Hero section"
     >
-      {/* Boot scan line */}
+      {/* ── 0: Full-bleed background image ── */}
+      <div className="absolute inset-0" style={{ zIndex: 0 }} aria-hidden="true">
+        <Image
+          src="/Deadshot2.png"
+          alt=""
+          fill
+          priority
+          unoptimized
+          className="object-cover hero-bg-image"
+          style={{ opacity: 0.82 }}
+        />
+      </div>
+
+      {/* ── 1: Gradient overlays ── */}
+      {/* Left panel — heavy dark fade for text readability */}
+      <div
+        className="absolute inset-0 pointer-events-none hero-left-gradient"
+        style={{ zIndex: 1 }}
+        aria-hidden="true"
+      />
+      {/* Bottom dissolve */}
+      <div
+        className="absolute inset-x-0 bottom-0 pointer-events-none"
+        style={{
+          height: "32%",
+          background: "linear-gradient(to top, #04060a 0%, rgba(4,6,10,0.75) 55%, transparent 100%)",
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      />
+      {/* Top fade */}
+      <div
+        className="absolute inset-x-0 top-0 pointer-events-none"
+        style={{
+          height: "18%",
+          background: "linear-gradient(to bottom, rgba(4,6,10,0.75) 0%, transparent 100%)",
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      />
+      {/* Edge vignette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse 95% 90% at 50% 50%, transparent 38%, rgba(4,6,10,0.45) 100%)",
+          zIndex: 1,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ── 2: Scanlines ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.06) 2px, rgba(0,0,0,0.06) 4px)",
+          zIndex: 2,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* ── 3: Perspective grid (tron floor) ── */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3, opacity: 0.45 }} aria-hidden="true">
+        <GridBackground />
+      </div>
+
+      {/* ── 4: R3F particles ── */}
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }} aria-hidden="true">
+        <MaskScene />
+      </div>
+
+      {/* ── 5: Boot scan line ── */}
       <AnimatePresence>
         {!booted && (
           <motion.div
             className="boot-scan-line"
+            style={{ zIndex: 9999 }}
             initial={{ top: 0, opacity: 1 }}
             animate={{ top: "100vh", opacity: [1, 1, 0] }}
             transition={{ duration: 0.55, ease: [0.4, 0, 0.2, 1] }}
@@ -47,191 +149,477 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      {/* Radial void center fade */}
-      <div
-        className="absolute inset-0 z-1 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 60% 80% at 50% 50%, transparent 20%, rgba(4,6,10,0.6) 70%, rgba(4,6,10,1) 100%)",
-        }}
-        aria-hidden="true"
-      />
-
-      {/* Main content */}
+      {/* ── 6: HUD overlay — desktop only, right half ── */}
       <motion.div
-        className="relative z-10 flex flex-col lg:flex-row items-center justify-center flex-1 px-6 lg:px-20 pt-24 pb-32 gap-12 lg:gap-20 max-w-350 mx-auto w-full"
+        className="absolute hidden lg:block pointer-events-none"
+        style={{
+          left: "42%",
+          right: "4%",
+          top: "5%",
+          bottom: "18%",
+          zIndex: 10,
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: booted ? 1 : 0 }}
+        transition={{ delay: 1.0, duration: 0.6 }}
+        aria-hidden="true"
+      >
+        <div className="relative w-full h-full">
+          {/* Corner brackets */}
+          <HudCorner pos="tl" />
+          <HudCorner pos="tr" />
+          <HudCorner pos="bl" />
+          <HudCorner pos="br" />
+
+          {/* SCANNING / LOCKED label — top center */}
+          <div
+            style={{
+              position: "absolute",
+              top: "1.5%",
+              left: "50%",
+              transform: "translateX(-50%)",
+              whiteSpace: "nowrap",
+            }}
+          >
+            <AnimatePresence mode="wait">
+              {scanning && (
+                <motion.span
+                  key="scan"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.58rem",
+                    letterSpacing: "0.22em",
+                    color: "rgba(204,0,0,0.75)",
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: [0.4, 1, 0.4] }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.7, repeat: Infinity }}
+                >
+                  SCANNING...
+                </motion.span>
+              )}
+              {locked && (
+                <motion.span
+                  key="locked"
+                  style={{
+                    fontFamily: "var(--font-mono)",
+                    fontSize: "0.58rem",
+                    letterSpacing: "0.22em",
+                    color: "var(--neon-red-soft)",
+                  }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  [ TARGET LOCKED ]
+                </motion.span>
+              )}
+            </AnimatePresence>
+          </div>
+
+          {/* Scan sweep line */}
+          <AnimatePresence>
+            {scanning && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  left: 0,
+                  right: 0,
+                  height: 1,
+                  background:
+                    "linear-gradient(90deg, transparent, rgba(204,0,0,0.55), rgba(204,0,0,0.55), transparent)",
+                  boxShadow: "0 0 10px rgba(204,0,0,0.4)",
+                }}
+                initial={{ top: "0%" }}
+                animate={{ top: "100%" }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 1.8, ease: "linear" }}
+              />
+            )}
+          </AnimatePresence>
+
+          {/* Reticle — appears after scan, centred on face */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  top: "30%",
+                  left: "50%",
+                  transform: "translate(-50%, -50%)",
+                }}
+                initial={{ opacity: 0, scale: 1.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className="reticle-locked" aria-hidden="true">
+                  {/* Outer ring — slow pulse */}
+                  <circle cx="30" cy="30" r="22" stroke="rgba(204,0,0,0.45)" strokeWidth="1" className="reticle-outer-ring" />
+                  {/* Secondary sweep ring */}
+                  <circle cx="30" cy="30" r="28" stroke="rgba(204,0,0,0.12)" strokeWidth="0.5" className="reticle-sweep-ring" />
+                  <circle cx="30" cy="30" r="4"  stroke="rgba(204,0,0,0.65)" strokeWidth="1" />
+                  <circle cx="30" cy="30" r="1.5" fill="rgba(204,0,0,0.8)" />
+                  {/* Arms */}
+                  <line x1="30" y1="4"  x2="30" y2="20" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                  <line x1="30" y1="40" x2="30" y2="56" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                  <line x1="4"  y1="30" x2="20" y2="30" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                  <line x1="40" y1="30" x2="56" y2="30" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                </svg>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Data readout panel — bottom-right of HUD */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  bottom: "6%",
+                  right: "3%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.45rem",
+                  alignItems: "flex-end",
+                }}
+                initial={{ opacity: 0, x: 10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+              >
+                {HUD_LINES.map((line, i) => (
+                  <motion.div
+                    key={line.label}
+                    style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}
+                    initial={{ opacity: 0, x: 6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + i * 0.09 }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.58rem",
+                        letterSpacing: "0.14em",
+                        color: "rgba(107,119,133,0.75)",
+                      }}
+                    >
+                      {line.label}
+                    </span>
+                    <span
+                      className="hud-value-live"
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.62rem",
+                        letterSpacing: "0.08em",
+                        color: line.color,
+                        animationDelay: `${1.5 + i * 1.2}s`,
+                      }}
+                    >
+                      {line.value}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Top-left micro label */}
+          <div
+            style={{
+              position: "absolute",
+              top: "1.5%",
+              left: "2%",
+              fontFamily: "var(--font-mono)",
+              fontSize: "0.55rem",
+              letterSpacing: "0.14em",
+              color: "rgba(204,0,0,0.35)",
+            }}
+          >
+            INTEL // CLASSIFIED
+          </div>
+
+          {/* Top-right coordinate display */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  top: "1.5%",
+                  right: "2%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "flex-end",
+                  gap: "0.2rem",
+                }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.4, delay: 0.3 }}
+              >
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.12em", color: "rgba(204,0,0,0.3)" }}>
+                  TARGET_COORD
+                </span>
+                <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.55rem", letterSpacing: "0.08em", color: "rgba(107,119,133,0.6)" }}>
+                  37.7749°N · 122.4194°W
+                </span>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Reticle annotations — appear after lock */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  top: "calc(30% + 38px)",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.22rem",
+                  alignItems: "center",
+                }}
+                initial={{ opacity: 0, y: 4 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: 0.5 }}
+              >
+                {HUD_RETICLE_LINES.map((line, i) => (
+                  <motion.div
+                    key={line.label}
+                    style={{ display: "flex", gap: "0.4rem", alignItems: "center" }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.55 + i * 0.08 }}
+                  >
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.48rem", letterSpacing: "0.12em", color: "rgba(107,119,133,0.55)" }}>
+                      {line.label}
+                    </span>
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.5rem", letterSpacing: "0.08em", color: "rgba(204,0,0,0.55)" }}>
+                      {line.value}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Left data readout panel — mirrors right panel */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  bottom: "6%",
+                  left: "3%",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.45rem",
+                  alignItems: "flex-start",
+                }}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.4, delay: 0.15 }}
+              >
+                {HUD_LINES_LEFT.map((line, i) => (
+                  <motion.div
+                    key={line.label}
+                    style={{ display: "flex", alignItems: "center", gap: "0.55rem" }}
+                    initial={{ opacity: 0, x: -6 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.2 + i * 0.09 }}
+                  >
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.14em", color: "rgba(107,119,133,0.75)" }}>
+                      {line.label}
+                    </span>
+                    <span
+                      className="hud-value-live"
+                      style={{
+                        fontFamily: "var(--font-mono)",
+                        fontSize: "0.62rem",
+                        letterSpacing: "0.08em",
+                        color: line.color,
+                        animationDelay: `${2.2 + i * 1.4}s`,
+                      }}
+                    >
+                      {line.value}
+                    </span>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Bottom center divider */}
+          <AnimatePresence>
+            {locked && (
+              <motion.div
+                style={{
+                  position: "absolute",
+                  bottom: "6%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  width: 1,
+                  height: "14%",
+                  background: "linear-gradient(to top, rgba(204,0,0,0.2), transparent)",
+                }}
+                initial={{ scaleY: 0, opacity: 0 }}
+                animate={{ scaleY: 1, opacity: 1 }}
+                transition={{ duration: 0.5, delay: 0.4 }}
+              />
+            )}
+          </AnimatePresence>
+        </div>
+      </motion.div>
+
+      {/* ── 7: Text content ── */}
+      <motion.div
+        className="relative flex flex-col justify-center flex-1 px-6 lg:px-20 pt-24 pb-32 max-w-2xl"
+        style={{ zIndex: 15 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: booted ? 1 : 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
       >
-        {/* ── Left: text ── */}
-        <div className="flex flex-col gap-6 flex-1 max-w-xl order-2 lg:order-1 text-center lg:text-left">
-          {/* Eyebrow */}
-          <motion.p
-            className="font-mono text-xs tracking-[0.25em] uppercase"
-            style={{ color: "var(--neon-cyan)", opacity: 0.7 }}
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 0.7, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            // IDENTITY :: D3ADSHOT
-          </motion.p>
-
-          {/* Headline */}
-          <motion.h1
-            className="font-display font-bold leading-[0.95] tracking-tight"
-            style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <span style={{ color: "var(--text-primary)" }}>I</span>
-            <br />
-            <span style={{ color: "var(--text-primary)" }}>AM</span>
-            <br />
-            <span
-              className="text-glow-cyan"
-              style={{ color: "var(--neon-cyan)" }}
-            >
-              D3ADSHOT.
-            </span>
-          </motion.h1>
-
-          {/* Sub */}
-          <motion.p
-            className="text-base leading-relaxed max-w-md mx-auto lg:mx-0"
-            style={{ color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
-          >
-            Bug bounty hunter &amp; offensive security researcher.
-            <br />I find what shouldn&apos;t be there.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div
-            className="flex flex-row flex-wrap gap-4 justify-center lg:justify-start"
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <a
-              href="#arsenal"
-              className="group relative inline-flex items-center gap-2 px-7 py-3 rounded-sm font-mono text-sm font-medium transition-all duration-300 overflow-hidden focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                background: "var(--neon-cyan)",
-                color: "var(--bg-void)",
-                boxShadow: "0 0 24px rgba(0,229,255,0.35), 0 0 60px rgba(0,229,255,0.12)",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 40px rgba(0,229,255,0.6), 0 0 80px rgba(0,229,255,0.25)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLElement).style.boxShadow =
-                  "0 0 24px rgba(0,229,255,0.35), 0 0 60px rgba(0,229,255,0.12)";
-              }}
-            >
-              View Engagements
-              <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
-            </a>
-
-            <a
-              href="#contact"
-              className="group inline-flex items-center gap-2 px-7 py-3 rounded-sm font-mono text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                background: "transparent",
-                color: "var(--text-primary)",
-                border: "1px solid rgba(232, 238, 245, 0.2)",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(255,42,61,0.6)";
-                el.style.color = "var(--neon-red-soft)";
-                el.style.boxShadow = "0 0 20px rgba(255,42,61,0.12)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(232,238,245,0.2)";
-                el.style.color = "var(--text-primary)";
-                el.style.boxShadow = "none";
-              }}
-            >
-              Get In Touch
-            </a>
-          </motion.div>
-
-          {/* Section index */}
-          <motion.span
-            className="font-mono text-xs hidden lg:block"
-            style={{ color: "var(--text-muted)", letterSpacing: "0.15em" }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1 }}
-          >
-            01 / 06
-          </motion.span>
-        </div>
-
-        {/* ── Right: Avatar ── */}
-        <motion.div
-          className="relative shrink-0 order-1 lg:order-2 flex items-center justify-center"
-          style={{ width: "min(480px, 80vw)", height: "min(480px, 80vw)" }}
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+        {/* Eyebrow */}
+        <motion.p
+          className="font-mono text-xs tracking-[0.25em] uppercase mb-6"
+          style={{ color: "var(--accent)", opacity: 0.7 }}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 0.7, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
         >
-          {/* Outer ambient aura */}
-          <div
-            className="absolute pointer-events-none"
-            style={{
-              inset: "-10%",
-              background:
-                "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.15) 0%, transparent 60%)",
-              filter: "blur(40px)",
-              zIndex: 0,
-            }}
-            aria-hidden="true"
-          />
+          // OFFENSIVE SECURITY RESEARCHER
+        </motion.p>
 
-          {/* Breathing inner glow */}
-          <motion.div
-            className="absolute pointer-events-none"
-            style={{
-              inset: "0%",
-              background:
-                "radial-gradient(circle at 50% 50%, rgba(0,229,255,0.2) 0%, transparent 50%)",
-              filter: "blur(20px)",
-              zIndex: 0,
-            }}
-            animate={{ opacity: [0.6, 1, 0.6] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            aria-hidden="true"
-          />
+        {/* Headline */}
+        <motion.h1
+          className="font-display font-bold leading-[0.95] tracking-tight mb-6"
+          style={{ fontSize: "clamp(3rem, 7vw, 6rem)" }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <span style={{ color: "var(--text-primary)" }}>I HUNT</span>
+          <br />
+          <span style={{ color: "var(--text-primary)" }}>WHAT</span>
+          <br />
+          <span className="text-glow-accent" style={{ color: "var(--accent)" }}>
+            HIDES.
+          </span>
+        </motion.h1>
 
-          {/* Avatar image floating effect */}
-          <motion.div
-            className="relative w-full h-full z-10"
-            animate={{ y: [-10, 10, -10] }}
-            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        {/* Sub */}
+        <motion.p
+          className="text-base leading-relaxed max-w-sm mb-8"
+          style={{ color: "var(--text-muted)", fontFamily: "var(--font-sans)" }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
+        >
+          I find what shouldn&apos;t be there.
+          <br />Bug bounty hunter and red team operator.
+        </motion.p>
+
+        {/* CTAs */}
+        <motion.div
+          className="flex flex-row flex-wrap gap-4"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <a
+            href="#arsenal"
+            className="hero-cta-primary group relative inline-flex items-center gap-2 px-7 py-3 rounded-sm font-mono text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
+            style={{
+              background: "rgba(204,0,0,0.08)",
+              color: "var(--text-primary)",
+              border: "1px solid rgba(204,0,0,0.5)",
+              boxShadow: "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "rgba(204,0,0,0.14)";
+              el.style.borderColor = "rgba(204,0,0,0.85)";
+              el.style.boxShadow = "0 0 32px rgba(204,0,0,0.35), 0 0 80px rgba(204,0,0,0.12), inset 0 1px 0 rgba(204,0,0,0.1)";
+              el.style.color = "#ff4444";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "rgba(204,0,0,0.08)";
+              el.style.borderColor = "rgba(204,0,0,0.5)";
+              el.style.boxShadow = "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)";
+              el.style.color = "var(--text-primary)";
+            }}
           >
-            <Image
-              src="/avatar.png"
-              alt="D3ADSHOT Avatar"
-              fill
-              priority
-              unoptimized
-              className="object-contain"
-              style={{ filter: "drop-shadow(0 0 30px rgba(0,229,255,0.25))" }}
-            />
-          </motion.div>
+            Explore the Arsenal
+            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+          </a>
+
+          <a
+            href="#contact"
+            className="hero-cta-secondary group inline-flex items-center gap-2 px-7 py-3 rounded-sm font-mono text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
+            style={{
+              background: "transparent",
+              color: "var(--text-primary)",
+              border: "1px solid rgba(232,238,245,0.15)",
+            }}
+            onMouseEnter={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "rgba(204,0,0,0.5)";
+              el.style.color = "var(--neon-red-soft)";
+              el.style.boxShadow = "0 0 16px rgba(204,0,0,0.1)";
+            }}
+            onMouseLeave={(e) => {
+              const el = e.currentTarget as HTMLElement;
+              el.style.borderColor = "rgba(232,238,245,0.15)";
+              el.style.color = "var(--text-primary)";
+              el.style.boxShadow = "none";
+            }}
+          >
+            Open a Channel
+          </a>
+        </motion.div>
+
+        {/* Section index */}
+        <motion.span
+          className="font-mono text-xs mt-8"
+          style={{ color: "var(--text-muted)", letterSpacing: "0.15em" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.1 }}
+        >
+          01 / 06
+        </motion.span>
+
+        {/* Mobile HUD strip — compact data row, hidden at lg where full HUD renders */}
+        <motion.div
+          className="lg:hidden flex gap-6 mt-6 overflow-x-auto"
+          style={{ scrollbarWidth: "none" }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: locked ? 1 : 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          aria-hidden="true"
+        >
+          {[...HUD_LINES, ...HUD_LINES_LEFT].slice(0, 5).map((line) => (
+            <div key={line.label} className="flex flex-col gap-0.5 flex-shrink-0">
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.48rem", letterSpacing: "0.14em", color: "rgba(107,119,133,0.6)" }}>
+                {line.label}
+              </span>
+              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.08em", color: line.color }}>
+                {line.value}
+              </span>
+            </div>
+          ))}
         </motion.div>
       </motion.div>
 
       {/* ── Platform marquee ── */}
       <motion.div
-        className="absolute bottom-0 left-0 right-0 z-10 overflow-hidden py-4"
+        className="absolute bottom-0 left-0 right-0 overflow-hidden py-3"
+        style={{
+          background: "rgba(20,0,0,0.55)",
+          borderTop: "1px solid rgba(204,0,0,0.12)",
+          zIndex: 20,
+        }}
         initial={{ opacity: 0 }}
         animate={{ opacity: booted ? 1 : 0 }}
         transition={{ delay: 1.1, duration: 0.5 }}
@@ -242,12 +630,10 @@ export default function Hero() {
             <span
               key={i}
               className="font-mono text-xs tracking-[0.3em]"
-              style={{ color: "var(--text-muted)", opacity: 0.4 }}
+              style={{ color: "rgba(232,238,245,0.35)" }}
             >
               {platform}
-              <span className="ml-10" style={{ color: "var(--neon-cyan)", opacity: 0.3 }}>
-                ·
-              </span>
+              <span className="ml-10" style={{ color: "var(--accent)", opacity: 0.35 }}>·</span>
             </span>
           ))}
         </div>
@@ -255,7 +641,8 @@ export default function Hero() {
 
       {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-16 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
+        className="absolute bottom-16 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        style={{ zIndex: 20 }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.5 }}
         transition={{ delay: 1.4 }}
@@ -263,7 +650,7 @@ export default function Hero() {
       >
         <motion.div
           className="w-px h-10 origin-top"
-          style={{ background: "linear-gradient(to bottom, var(--neon-cyan), transparent)" }}
+          style={{ background: "linear-gradient(to bottom, var(--accent), transparent)" }}
           animate={{ scaleY: [0, 1, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
         />

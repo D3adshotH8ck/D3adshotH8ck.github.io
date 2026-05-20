@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
@@ -57,7 +57,7 @@ function FeaturedBg() {
           const dist = Math.sqrt(dx * dx + dy * dy);
           if (dist < 90) {
             const alpha = (1 - dist / 90) * 0.18;
-            ctx.strokeStyle = `rgba(0,229,255,${alpha})`;
+            ctx.strokeStyle = `rgba(180,0,0,${alpha})`;
             ctx.lineWidth = 0.5;
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
@@ -69,7 +69,7 @@ function FeaturedBg() {
 
       /* Draw nodes */
       nodes.forEach((n) => {
-        ctx.fillStyle = "rgba(0,229,255,0.25)";
+        ctx.fillStyle = "rgba(180,0,0,0.25)";
         ctx.beginPath();
         ctx.arc(n.x, n.y, 1.5, 0, Math.PI * 2);
         ctx.fill();
@@ -152,7 +152,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
         style={{
           background:
-            "radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), rgba(0,229,255,0.06) 0%, transparent 70%)",
+            "radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), rgba(180,0,0,0.05) 0%, transparent 70%)",
         }}
         aria-hidden="true"
       />
@@ -194,9 +194,9 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
                       background: "rgba(255,42,61,0.08)",
                     }
                   : {
-                      color: "var(--neon-cyan-soft)",
-                      borderColor: "rgba(0,229,255,0.2)",
-                      background: "rgba(0,229,255,0.06)",
+                      color: "var(--accent-soft)",
+                      borderColor: "rgba(204,0,0,0.2)",
+                      background: "rgba(204,0,0,0.06)",
                     }
               }
             >
@@ -251,17 +251,24 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-1.5 font-mono text-xs px-4 py-2 rounded-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-1"
             style={{
-              color: "var(--bg-void)",
-              background: "var(--neon-cyan)",
-              boxShadow: "0 0 16px rgba(0,229,255,0.2)",
+              color: "var(--text-primary)",
+              background: "rgba(204,0,0,0.08)",
+              border: "1px solid rgba(204,0,0,0.45)",
+              boxShadow: "0 0 14px rgba(204,0,0,0.15)",
             }}
             onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow =
-                "0 0 28px rgba(0,229,255,0.45)";
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "rgba(204,0,0,0.14)";
+              el.style.borderColor = "rgba(204,0,0,0.8)";
+              el.style.boxShadow = "0 0 24px rgba(204,0,0,0.35)";
+              el.style.color = "#ff4444";
             }}
             onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.boxShadow =
-                "0 0 16px rgba(0,229,255,0.2)";
+              const el = e.currentTarget as HTMLElement;
+              el.style.background = "rgba(204,0,0,0.08)";
+              el.style.borderColor = "rgba(204,0,0,0.45)";
+              el.style.boxShadow = "0 0 14px rgba(204,0,0,0.15)";
+              el.style.color = "var(--text-primary)";
             }}
           >
             {tool.id === "03"
@@ -282,8 +289,8 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
               }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(0,229,255,0.4)";
-                el.style.color = "var(--neon-cyan)";
+                el.style.borderColor = "rgba(204,0,0,0.4)";
+                el.style.color = "var(--accent)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget as HTMLElement;
@@ -303,7 +310,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
           className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-lg"
           style={{
             background:
-              "linear-gradient(135deg, rgba(255,42,61,0.06) 0%, transparent 50%, rgba(0,229,255,0.06) 100%)",
+              "linear-gradient(135deg, rgba(255,42,61,0.07) 0%, transparent 50%, rgba(140,0,0,0.07) 100%)",
           }}
           aria-hidden="true"
         />
@@ -330,7 +337,7 @@ export default function Arsenal() {
           <div className="flex flex-col gap-2">
             <motion.span
               className="font-orbitron text-xs tracking-widest uppercase"
-              style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
+              style={{ color: "var(--accent)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
               transition={{ duration: 0.5 }}

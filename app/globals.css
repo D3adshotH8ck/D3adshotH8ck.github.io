@@ -1,27 +1,27 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 /* ── Design Tokens ──────────────────────────────────────────── */
 :root {
   --bg-void:          #04060a;
   --bg-carbon:        #0a0e14;
   --bg-elevated:      #11161f;
-  --neon-cyan:        #00e5ff;
-  --neon-cyan-soft:   #4dd0e1;
+  --accent:        #cc0000;
+  --accent-soft:   #ff4444;
   --neon-red:         #ff2a3d;
   --neon-red-soft:    #ff5566;
   --chrome:           #c8d0d8;
   --text-primary:     #e8eef5;
   --text-muted:       #6b7785;
-  --grid-line:        rgba(0, 229, 255, 0.08);
+  --grid-line:        rgba(204, 0, 0, 0.08);
 
   /* Shadows */
-  --glow-cyan:        0 0 20px rgba(0,229,255,0.15), 0 0 60px rgba(0,229,255,0.08);
-  --glow-cyan-md:     0 0 30px rgba(0,229,255,0.25), 0 0 80px rgba(0,229,255,0.12);
+  --glow-accent:        0 0 20px rgba(204,0,0,0.15), 0 0 60px rgba(204,0,0,0.08);
+  --glow-accent-md:     0 0 30px rgba(204,0,0,0.28), 0 0 80px rgba(204,0,0,0.12);
   --glow-red:         0 0 20px rgba(255,42,61,0.2), 0 0 60px rgba(255,42,61,0.08);
 
   /* Card glass */
-  --card-border:      rgba(0, 229, 255, 0.12);
-  --card-border-hover: rgba(0, 229, 255, 0.60);
+  --card-border:      rgba(204, 0, 0, 0.12);
+  --card-border-hover: rgba(204, 0, 0, 0.55);
   --card-bg:          rgba(10, 14, 20, 0.85);
 }
 
@@ -30,8 +30,8 @@
   --color-void:       var(--bg-void);
   --color-carbon:     var(--bg-carbon);
   --color-elevated:   var(--bg-elevated);
-  --color-cyan:       var(--neon-cyan);
-  --color-cyan-soft:  var(--neon-cyan-soft);
+  --color-accent:       var(--accent);
+  --color-accent-soft:  var(--accent-soft);
   --color-red-neo:    var(--neon-red);
   --color-red-soft:   var(--neon-red-soft);
   --color-chrome:     var(--chrome);
@@ -66,13 +66,13 @@ body {
 
 /* ── Selection ──────────────────────────────────────────────── */
 ::selection {
-  background: rgba(0, 229, 255, 0.2);
+  background: rgba(204, 0, 0, 0.18);
   color: var(--text-primary);
 }
 
 /* ── Focus visible ──────────────────────────────────────────── */
 :focus-visible {
-  outline: 2px solid var(--neon-cyan);
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
@@ -84,11 +84,11 @@ body {
   background: var(--bg-void);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 229, 255, 0.2);
+  background: rgba(204, 0, 0, 0.2);
   border-radius: 2px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 229, 255, 0.4);
+  background: rgba(204, 0, 0, 0.4);
 }
 
 /* ── Utility: glow text ─────────────────────────────────────── */
@@ -96,8 +96,8 @@ body {
   font-family: var(--font-orbitron), monospace;
 }
 
-.text-glow-cyan {
-  text-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 60px rgba(0, 229, 255, 0.2);
+.text-glow-accent {
+  text-shadow: 0 0 20px rgba(204, 0, 0, 0.7), 0 0 60px rgba(204, 0, 0, 0.25);
 }
 
 .text-glow-red {
@@ -110,13 +110,13 @@ body {
   border: 1px solid var(--card-border);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  box-shadow: var(--glow-cyan), inset 0 1px 0 rgba(0,229,255,0.05);
+  box-shadow: var(--glow-accent), inset 0 1px 0 rgba(204,0,0,0.04);
   transition: border-color 300ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.22,1,0.36,1);
 }
 
 .glass-card:hover {
   border-color: var(--card-border-hover);
-  box-shadow: var(--glow-cyan-md), inset 0 1px 0 rgba(0,229,255,0.08);
+  box-shadow: var(--glow-accent-md), inset 0 1px 0 rgba(204,0,0,0.07);
   transform: translateY(-4px);
 }
 
@@ -174,8 +174,8 @@ body {
   left: 0;
   width: 100%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
-  box-shadow: 0 0 12px var(--neon-cyan), 0 0 40px rgba(0,229,255,0.4);
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  box-shadow: 0 0 12px var(--accent), 0 0 40px rgba(204,0,0,0.4);
   animation: boot-scan 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
   z-index: 9999;
   pointer-events: none;
@@ -190,9 +190,9 @@ body {
 .stat-underline {
   display: block;
   height: 1px;
-  background: var(--neon-cyan);
+  background: var(--accent);
   width: 0;
-  box-shadow: 0 0 8px var(--neon-cyan);
+  box-shadow: 0 0 8px var(--accent);
   transition: width 600ms cubic-bezier(0.22,1,0.36,1);
 }
 
@@ -206,11 +206,94 @@ body {
   50%       { opacity: 0.7; }
 }
 
+/* ── Reticle locked animations ──────────────────────────────── */
+@keyframes reticle-ring-pulse {
+  0%, 100% { opacity: 0.45; }
+  50%       { opacity: 0.85; }
+}
+
+@keyframes reticle-sweep {
+  0%, 100% { opacity: 0.12; }
+  50%       { opacity: 0.0; }
+}
+
+.reticle-outer-ring {
+  animation: reticle-ring-pulse 2.8s ease-in-out infinite;
+}
+
+.reticle-sweep-ring {
+  animation: reticle-sweep 3.5s ease-in-out infinite;
+}
+
+/* ── HUD data flicker ───────────────────────────────────────── */
+@keyframes hud-data-flicker {
+  0%, 92%, 100% { opacity: 1; }
+  94%            { opacity: 0.55; }
+  96%            { opacity: 1; }
+  98%            { opacity: 0.7; }
+}
+
+.hud-value-live {
+  animation: hud-data-flicker 6s ease-in-out infinite;
+}
+
+/* ── Hero responsive overrides ──────────────────────────────── */
+.hero-bg-image {
+  object-position: center 22%;
+}
+
+/* Left gradient: heavier on desktop (clear text zone), lighter on mobile (let image breathe) */
+.hero-left-gradient {
+  background: linear-gradient(
+    to right,
+    rgba(4,6,10,0.97) 0%,
+    rgba(4,6,10,0.9)  28%,
+    rgba(4,6,10,0.55) 52%,
+    rgba(4,6,10,0.12) 72%,
+    transparent       88%
+  );
+}
+
+@media (max-width: 1023px) {
+  .hero-bg-image {
+    object-position: 65% 18%;
+  }
+
+  .hero-left-gradient {
+    background: linear-gradient(
+      to right,
+      rgba(4,6,10,0.96) 0%,
+      rgba(4,6,10,0.88) 40%,
+      rgba(4,6,10,0.55) 70%,
+      rgba(4,6,10,0.1)  90%,
+      transparent       100%
+    );
+  }
+}
+
+/* CTA touch feedback */
+@media (hover: none) {
+  .hero-cta-primary:active {
+    background: rgba(204,0,0,0.14) !important;
+    border-color: rgba(204,0,0,0.85) !important;
+    box-shadow: 0 0 24px rgba(204,0,0,0.3) !important;
+    color: #ff4444 !important;
+  }
+
+  .hero-cta-secondary:active {
+    border-color: rgba(204,0,0,0.5) !important;
+    color: var(--neon-red-soft) !important;
+  }
+}
+
 /* ── Reduced motion ─────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
   .marquee-track-quad,
-  .boot-scan-line {
+  .boot-scan-line,
+  .reticle-outer-ring,
+  .reticle-sweep-ring,
+  .hud-value-live {
     animation: none;
   }
 

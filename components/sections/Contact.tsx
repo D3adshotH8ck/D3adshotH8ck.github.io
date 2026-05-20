@@ -1,6 +1,7 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
+import Image from "next/image";
 import { motion, useInView } from "framer-motion";
 
 const INSTAGRAM_URL = "https://instagram.com/d3adshotsec";
@@ -35,6 +36,17 @@ const channels = [
   },
 ];
 
+function Corner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
+  const base: React.CSSProperties = { position: "absolute", width: 16, height: 16, border: "1.5px solid rgba(204,0,0,0.55)" };
+  const sides: Record<string, React.CSSProperties> = {
+    tl: { top: 0, left: 0,   borderRight: "none", borderBottom: "none" },
+    tr: { top: 0, right: 0,  borderLeft:  "none", borderBottom: "none" },
+    bl: { bottom: 0, left: 0,  borderRight: "none", borderTop: "none" },
+    br: { bottom: 0, right: 0, borderLeft:  "none", borderTop: "none" },
+  };
+  return <div style={{ ...base, ...sides[pos] }} aria-hidden="true" />;
+}
+
 export default function Contact() {
   const ref = useRef<HTMLDivElement>(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
@@ -52,7 +64,7 @@ export default function Contact() {
           <div className="flex flex-col gap-2">
             <motion.span
               className="font-orbitron text-xs tracking-widest uppercase"
-              style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
+              style={{ color: "var(--accent)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
               transition={{ duration: 0.5 }}
@@ -80,7 +92,7 @@ export default function Contact() {
           />
         </div>
 
-        {/* Intro */}
+        {/* Intro — full width so it doesn't push the portrait down */}
         <motion.p
           className="text-base mb-12 max-w-lg"
           style={{ color: "var(--text-muted)", lineHeight: 1.8 }}
@@ -93,63 +105,125 @@ export default function Contact() {
           {" "}Bug bounty collabs, red team engagements, OwlSec community, or just a good recon story.
         </motion.p>
 
-        {/* Channel cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-2xl">
-          {channels.map((ch, i) => (
-            <motion.a
-              key={ch.id}
-              href={ch.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="glass-card group flex flex-col gap-5 p-7 rounded-sm focus-visible:ring-2"
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              aria-label={`Contact on ${ch.label}`}
-            >
-              {/* Icon */}
-              <div
-                className="w-11 h-11 rounded-sm flex items-center justify-center transition-colors duration-200"
+        {/* Body — two columns on desktop */}
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 items-start">
+
+          {/* Left: channel cards */}
+          <div className="flex-1 min-w-0">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {channels.map((ch, i) => (
+                <motion.a
+                  key={ch.id}
+                  href={ch.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="glass-card group flex flex-col gap-5 p-7 rounded-sm focus-visible:ring-2"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.12, ease: [0.22, 1, 0.36, 1] }}
+                  aria-label={`Contact on ${ch.label}`}
+                >
+                  <div
+                    className="w-11 h-11 rounded-sm flex items-center justify-center"
+                    style={{
+                      color: "var(--text-muted)",
+                      background: "rgba(255,255,255,0.04)",
+                      border: "1px solid var(--grid-line)",
+                    }}
+                  >
+                    {ch.icon}
+                  </div>
+                  <div className="flex flex-col gap-1.5">
+                    <span className="font-display font-bold text-lg" style={{ color: "var(--text-primary)" }}>
+                      {ch.label}
+                    </span>
+                    <span className="font-mono text-xs" style={{ color: "var(--accent)", opacity: 0.7 }}>
+                      {ch.handle}
+                    </span>
+                    <p className="text-sm mt-1 leading-relaxed" style={{ color: "var(--text-muted)" }}>
+                      {ch.description}
+                    </p>
+                  </div>
+                  <span
+                    className="font-mono text-xs mt-auto transition-all duration-200 group-hover:translate-x-1"
+                    style={{ color: "var(--accent)" }}
+                  >
+                    Open {ch.label} →
+                  </span>
+                </motion.a>
+              ))}
+            </div>
+          </div>
+
+          {/* Right: portrait — desktop only */}
+          <motion.div
+            className="hidden lg:flex flex-col items-center gap-5 shrink-0 glass-card rounded-sm overflow-hidden"
+            style={{ width: 240, padding: "1.25rem" }}
+            initial={{ opacity: 0, x: 24 }}
+            animate={inView ? { opacity: 1, x: 0 } : {}}
+            whileHover={{ y: -4, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }}
+            transition={{ duration: 0.7, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
+          >
+            {/* Framed portrait */}
+            <div className="relative w-full" style={{ height: 273 }}>
+              <Corner pos="tl" />
+              <Corner pos="tr" />
+              <Corner pos="bl" />
+              <Corner pos="br" />
+
+              <Image
+                src="/Deadshot1.png"
+                alt="D3ADSHOT"
+                fill
+                unoptimized
+                className="object-contain object-top"
                 style={{
-                  color: "var(--text-muted)",
-                  background: "rgba(255,255,255,0.04)",
-                  border: "1px solid var(--grid-line)",
+                  filter: "drop-shadow(0 0 28px rgba(200,0,0,0.45)) drop-shadow(0 0 10px rgba(255,0,0,0.2))",
                 }}
-              >
-                {ch.icon}
-              </div>
+              />
 
-              {/* Text */}
-              <div className="flex flex-col gap-1.5">
-                <span
-                  className="font-display font-bold text-lg"
-                  style={{ color: "var(--text-primary)" }}
-                >
-                  {ch.label}
-                </span>
-                <span
-                  className="font-mono text-xs"
-                  style={{ color: "var(--neon-cyan)", opacity: 0.7 }}
-                >
-                  {ch.handle}
-                </span>
-                <p
-                  className="text-sm mt-1 leading-relaxed"
-                  style={{ color: "var(--text-muted)" }}
-                >
-                  {ch.description}
-                </p>
-              </div>
+              {/* Bottom dissolve */}
+              <div
+                className="absolute bottom-0 left-0 right-0 pointer-events-none"
+                style={{
+                  height: "38%",
+                  background: "linear-gradient(to bottom, transparent, rgba(10,14,20,0.97))",
+                  zIndex: 10,
+                }}
+                aria-hidden="true"
+              />
+            </div>
 
-              {/* Arrow */}
+            {/* Meta labels */}
+            <div className="flex flex-col items-center gap-1.5 w-full">
               <span
-                className="font-mono text-xs mt-auto transition-all duration-200 group-hover:translate-x-1"
-                style={{ color: "var(--neon-cyan)" }}
+                className="font-mono text-xs tracking-[0.18em]"
+                style={{ color: "var(--text-muted)", opacity: 0.5 }}
               >
-                Open {ch.label} →
+                // OPERATOR
               </span>
-            </motion.a>
-          ))}
+              <span
+                className="font-display font-bold tracking-wide"
+                style={{ color: "var(--text-primary)", fontSize: "1.1rem" }}
+              >
+                D3ADSHOT
+              </span>
+              {/* Pulsing status dot */}
+              <div className="flex items-center gap-2 mt-1">
+                <motion.span
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: "var(--accent)" }}
+                  animate={{ opacity: [1, 0.2, 1] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                  aria-hidden="true"
+                />
+                <span className="font-mono text-xs tracking-[0.14em]" style={{ color: "var(--accent)" }}>
+                  OPERATIONAL
+                </span>
+              </div>
+            </div>
+          </motion.div>
+
         </div>
       </div>
     </section>

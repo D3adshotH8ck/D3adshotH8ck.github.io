@@ -49,8 +49,8 @@ export default function GridBackground() {
         const dx = x - vpX;
         const endX = vpX + dx * 0.05;
 
-        const alpha = Math.max(0, 0.35 - Math.abs((x - vpX) / (w * 0.7)) * 0.35);
-        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+        const alpha = Math.max(0, 0.28 - Math.abs((x - vpX) / (w * 0.7)) * 0.28);
+        ctx.strokeStyle = `rgba(180, 0, 0, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(x, h);
         ctx.lineTo(endX, vpY);
@@ -61,8 +61,8 @@ export default function GridBackground() {
       for (let j = 1; j <= rows; j++) {
         const prog = j / rows;
         const y = vpY + (h - vpY) * Math.pow(prog, 1.6);
-        const alpha = prog * 0.35;
-        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+        const alpha = prog * 0.28;
+        ctx.strokeStyle = `rgba(180, 0, 0, ${alpha})`;
         ctx.beginPath();
         ctx.moveTo(0, y);
         ctx.lineTo(w, y);

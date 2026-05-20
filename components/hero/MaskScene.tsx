@@ -6,22 +6,22 @@ import * as THREE from "three";
 
 /* Particles only — the mask image is rendered in CSS, not WebGL */
 function Particles() {
-  const count = 180;
+  const count = 120;
 
   const { geo, mat } = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 14;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 14;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 6 - 4;
+      pos[i * 3]     = (Math.random() - 0.5) * 16;
+      pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+      pos[i * 3 + 2] = (Math.random() - 0.5) * 5 - 3;
     }
     const g = new THREE.BufferGeometry();
     g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     const m = new THREE.PointsMaterial({
-      color: new THREE.Color(0x00e5ff),
-      size: 0.018,
+      color: new THREE.Color(0xcc0000),
+      size: 0.034,
       transparent: true,
-      opacity: 0.4,
+      opacity: 0.55,
       sizeAttenuation: true,
     });
     return { geo: g, mat: m };

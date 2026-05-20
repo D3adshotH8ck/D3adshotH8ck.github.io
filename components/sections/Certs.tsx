@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
@@ -52,7 +52,7 @@ export default function Certs() {
           <div className="flex flex-col gap-2">
             <motion.span
               className="font-orbitron text-xs tracking-widest uppercase"
-              style={{ color: "var(--neon-cyan)", opacity: 0.6 }}
+              style={{ color: "var(--accent)", opacity: 0.6 }}
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 0.6 } : {}}
               transition={{ duration: 0.5 }}
@@ -90,9 +90,9 @@ export default function Certs() {
               className="group relative flex flex-col items-center text-center gap-6 p-7 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               style={{
                 background: "rgba(10, 14, 20, 0.4)",
-                border: "1px solid rgba(0,229,255,0.12)",
+                border: "1px solid rgba(204,0,0,0.12)",
                 backdropFilter: "blur(24px)",
-                boxShadow: "0 0 20px rgba(0,229,255,0.08), inset 0 1px 0 rgba(0,229,255,0.05)",
+                boxShadow: "0 0 20px rgba(204,0,0,0.08), inset 0 1px 0 rgba(204,0,0,0.04)",
                 transition: "border-color 300ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.22,1,0.36,1)",
               }}
               initial={{ opacity: 0, y: 28 }}
@@ -101,14 +101,14 @@ export default function Certs() {
               transition={{ duration: 0.6, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
               onMouseEnter={(e) => {
                 const el = e.currentTarget;
-                el.style.borderColor = "rgba(0,229,255,0.5)";
-                el.style.boxShadow = "0 0 40px rgba(0,229,255,0.15), inset 0 1px 0 rgba(0,229,255,0.08)";
+                el.style.borderColor = "rgba(204,0,0,0.5)";
+                el.style.boxShadow = "0 0 40px rgba(204,0,0,0.14), inset 0 1px 0 rgba(204,0,0,0.07)";
                 el.style.transform = "translateY(-4px)";
               }}
               onMouseLeave={(e) => {
                 const el = e.currentTarget;
-                el.style.borderColor = "rgba(0,229,255,0.12)";
-                el.style.boxShadow = "0 0 20px rgba(0,229,255,0.08), inset 0 1px 0 rgba(0,229,255,0.05)";
+                el.style.borderColor = "rgba(204,0,0,0.12)";
+                el.style.boxShadow = "0 0 20px rgba(204,0,0,0.08), inset 0 1px 0 rgba(204,0,0,0.04)";
                 el.style.transform = "";
               }}
             >
@@ -127,7 +127,7 @@ export default function Certs() {
                 >
                   {cert.title}
                 </h3>
-                <p className="font-mono text-xs" style={{ color: "var(--neon-cyan)" }}>
+                <p className="font-mono text-xs" style={{ color: "var(--accent)" }}>
                   {cert.issuer}
                 </p>
               </div>

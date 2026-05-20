@@ -68,7 +68,7 @@ export default function CursorTrail() {
         ctx.beginPath();
         ctx.moveTo(p0.x, p0.y);
         ctx.lineTo(p1.x, p1.y);
-        ctx.strokeStyle = `rgba(0, 229, 255, ${alpha})`;
+        ctx.strokeStyle = `rgba(200, 0, 0, ${alpha})`;
         ctx.lineWidth = 1.5 * t * ageFade;
         ctx.lineCap = "round";
         ctx.stroke();

@@ -38,7 +38,7 @@ export default function ParticlesBackground() {
               distance: 200,
               links: {
                 opacity: 1,
-                color: "#00ffff",
+                color: "#cc0000",
               },
             },
             repulse: {
@@ -52,7 +52,7 @@ export default function ParticlesBackground() {
             value: "#f0f0f0",
           },
           links: {
-            color: "#00ffff",
+            color: "#cc0000",
             distance: 150,
             enable: true,
             opacity: 0.4,

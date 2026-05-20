@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { motion } from "framer-motion";
 
@@ -8,17 +8,17 @@ export default function Footer() {
       className="w-full py-8 relative"
       style={{
         background: "transparent",
-        borderTop: "1px solid var(--neon-cyan)",
+        borderTop: "1px solid var(--accent)",
       }}
       aria-label="Site footer"
     >
-      {/* Cyan top line glow */}
+      {/* Crimson top line glow */}
       <div
         className="absolute top-0 left-0 right-0 h-px pointer-events-none"
         style={{
           background:
-            "linear-gradient(90deg, transparent, var(--neon-cyan), transparent)",
-          boxShadow: "0 0 16px rgba(0,229,255,0.4)",
+            "linear-gradient(90deg, transparent, var(--accent), transparent)",
+          boxShadow: "0 0 16px rgba(204,0,0,0.45)",
           opacity: 0.5,
         }}
         aria-hidden="true"
@@ -48,8 +48,8 @@ export default function Footer() {
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement;
-            el.style.borderColor = "rgba(0,229,255,0.4)";
-            el.style.color = "var(--neon-cyan-soft)";
+            el.style.borderColor = "rgba(204,0,0,0.4)";
+            el.style.color = "var(--accent-soft)";
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLElement;
@@ -70,12 +70,12 @@ export default function Footer() {
           <span style={{ letterSpacing: "0.1em" }}>STATUS:</span>
           <motion.span
             className="w-2 h-2 rounded-full"
-            style={{ background: "#00c853" }}
-            animate={{ opacity: [1, 0.3, 1] }}
+            style={{ background: "var(--accent)" }}
+            animate={{ opacity: [1, 0.2, 1], boxShadow: ["0 0 6px rgba(204,0,0,0.8)", "0 0 2px rgba(204,0,0,0.2)", "0 0 6px rgba(204,0,0,0.8)"] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
             aria-label="Operational"
           />
-          <span style={{ color: "#00c853", letterSpacing: "0.08em" }}>
+          <span style={{ color: "var(--accent)", letterSpacing: "0.08em" }}>
             OPERATIONAL
           </span>
         </div>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
@@ -81,7 +81,7 @@ export default function Stats() {
             {/* Underline draws on when counter finishes */}
             <motion.span
               className="block h-px origin-left"
-              style={{ background: "var(--neon-cyan)", boxShadow: "0 0 8px var(--neon-cyan)" }}
+              style={{ background: "var(--accent)", boxShadow: "0 0 8px var(--accent)" }}
               initial={{ scaleX: 0 }}
               animate={inView ? { scaleX: 1 } : { scaleX: 0 }}
               transition={{ duration: 0.5, delay: i * 0.12 + 1.2, ease: [0.22, 1, 0.36, 1] }}
