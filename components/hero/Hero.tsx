@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -10,40 +10,45 @@ const PLATFORMS = ["BUGCROWD", "HACKERONE", "INTIGRITI", "YESWEHACK", "OWLSEC"];
 const marqueeText = Array(4).fill(PLATFORMS).flat();
 
 const HUD_LINES = [
-  { label: "SUBJECT",    value: "D3ADSHOT",        color: "var(--accent-soft)" },
-  { label: "STATUS",     value: "HUNTING",          color: "var(--accent)" },
-  { label: "THREAT_LVL", value: "CRITICAL",         color: "var(--neon-red)" },
-  { label: "SIG",        value: "7A:4F:C2:D3:B7",   color: "var(--text-muted)" },
+  { label: "SUBJECT", value: "D3ADSHOT", color: "var(--accent-soft)" },
+  { label: "STATUS", value: "HUNTING", color: "var(--accent)" },
+  { label: "THREAT_LVL", value: "CRITICAL", color: "var(--neon-red)" },
+  { label: "SIG", value: "7A:4F:C2:D3:B7", color: "var(--text-muted)" },
 ];
 
 const HUD_LINES_LEFT = [
-  { label: "NET_STATUS",   value: "ACTIVE",          color: "var(--accent)" },
-  { label: "ENC_TYPE",     value: "AES-256-GCM",     color: "var(--text-muted)" },
-  { label: "LAST_BREACH",  value: "[REDACTED]",      color: "var(--neon-red)" },
-  { label: "PLATFORMS",    value: "04 ACTIVE",       color: "var(--accent-soft)" },
+  { label: "NET_STATUS", value: "ACTIVE", color: "var(--accent)" },
+  { label: "ENC_TYPE", value: "AES-256-GCM", color: "var(--text-muted)" },
+  { label: "LAST_BREACH", value: "[REDACTED]", color: "var(--neon-red)" },
+  { label: "PLATFORMS", value: "04 ACTIVE", color: "var(--accent-soft)" },
 ];
 
 const HUD_RETICLE_LINES = [
-  { label: "BIOMETRIC",    value: "CONFIRMED" },
-  { label: "CLEARANCE",    value: "ALPHA-OVERRIDE" },
-  { label: "MATCH",        value: "99.7%" },
+  { label: "BIOMETRIC", value: "CONFIRMED" },
+  { label: "CLEARANCE", value: "ALPHA-OVERRIDE" },
+  { label: "MATCH", value: "99.7%" },
 ];
 
 function HudCorner({ pos }: { pos: "tl" | "tr" | "bl" | "br" }) {
-  const base: React.CSSProperties = { position: "absolute", width: 20, height: 20, border: "1.5px solid rgba(204,0,0,0.65)" };
+  const base: React.CSSProperties = {
+    position: "absolute",
+    width: 20,
+    height: 20,
+    border: "1.5px solid rgba(204,0,0,0.65)",
+  };
   const corners: Record<string, React.CSSProperties> = {
-    tl: { top: 0,    left: 0,   borderRight: "none", borderBottom: "none" },
-    tr: { top: 0,    right: 0,  borderLeft:  "none", borderBottom: "none" },
-    bl: { bottom: 0, left: 0,   borderRight: "none", borderTop:    "none" },
-    br: { bottom: 0, right: 0,  borderLeft:  "none", borderTop:    "none" },
+    tl: { top: 0, left: 0, borderRight: "none", borderBottom: "none" },
+    tr: { top: 0, right: 0, borderLeft: "none", borderBottom: "none" },
+    bl: { bottom: 0, left: 0, borderRight: "none", borderTop: "none" },
+    br: { bottom: 0, right: 0, borderLeft: "none", borderTop: "none" },
   };
   return <div style={{ ...base, ...corners[pos] }} aria-hidden="true" />;
 }
 
 export default function Hero() {
-  const [booted,   setBooted]   = useState(false);
+  const [booted, setBooted] = useState(false);
   const [scanning, setScanning] = useState(false);
-  const [locked,   setLocked]   = useState(false);
+  const [locked, setLocked] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => setBooted(true), 700);
@@ -52,9 +57,15 @@ export default function Hero() {
 
   useEffect(() => {
     if (!booted) return;
-    const t1 = setTimeout(() => setScanning(true),  1400);
-    const t2 = setTimeout(() => { setScanning(false); setLocked(true); }, 3200);
-    return () => { clearTimeout(t1); clearTimeout(t2); };
+    const t1 = setTimeout(() => setScanning(true), 1400);
+    const t2 = setTimeout(() => {
+      setScanning(false);
+      setLocked(true);
+    }, 3200);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
   }, [booted]);
 
   return (
@@ -63,58 +74,63 @@ export default function Hero() {
       style={{ background: "#04060a" }}
       aria-label="Hero section"
     >
-      {/* ── 0: Full-bleed background image ── */}
-      <div className="absolute inset-0" style={{ zIndex: 0 }} aria-hidden="true">
+      {/* ── 0: Right-positioned character portrait ── */}
+      <div
+        className="absolute inset-y-0 right-0 w-full lg:w-[60%] pointer-events-none"
+        style={{ zIndex: 0 }}
+        aria-hidden="true"
+      >
         <Image
-          src="/Deadshot2.png"
+          src="/DeadshotHero.png"
           alt=""
           fill
           priority
           unoptimized
-          className="object-cover hero-bg-image"
-          style={{ opacity: 0.82 }}
+          className="character-portrait"
+          style={{ opacity: 0.93 }}
+        />
+        {/* Seamless left-to-character blend */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to right, #04060a 0%, rgba(4,6,10,0.72) 18%, rgba(4,6,10,0.28) 44%, rgba(4,6,10,0.04) 68%, transparent 85%)",
+          }}
+        />
+        {/* Atmospheric bottom dissolve */}
+        <div
+          className="absolute bottom-0 left-0 right-0"
+          style={{
+            height: "48%",
+            background:
+              "linear-gradient(to top, #04060a 0%, rgba(4,6,10,0.78) 38%, transparent 100%)",
+          }}
+        />
+        {/* Blood-red ground fog */}
+        <div
+          className="absolute bottom-0 left-0 right-0"
+          style={{
+            height: "32%",
+            background:
+              "radial-gradient(ellipse 90% 55% at 55% 100%, rgba(204,0,0,0.07) 0%, transparent 70%)",
+          }}
+        />
+        {/* Right edge vignette */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to left, rgba(4,6,10,0.55) 0%, transparent 25%)",
+          }}
+        />
+        {/* Mobile full-screen darkening overlay — text must read over this */}
+        <div
+          className="lg:hidden absolute inset-0"
+          style={{ background: "rgba(4,6,10,0.62)" }}
         />
       </div>
 
-      {/* ── 1: Gradient overlays ── */}
-      {/* Left panel — heavy dark fade for text readability */}
-      <div
-        className="absolute inset-0 pointer-events-none hero-left-gradient"
-        style={{ zIndex: 1 }}
-        aria-hidden="true"
-      />
-      {/* Bottom dissolve */}
-      <div
-        className="absolute inset-x-0 bottom-0 pointer-events-none"
-        style={{
-          height: "32%",
-          background: "linear-gradient(to top, #04060a 0%, rgba(4,6,10,0.75) 55%, transparent 100%)",
-          zIndex: 1,
-        }}
-        aria-hidden="true"
-      />
-      {/* Top fade */}
-      <div
-        className="absolute inset-x-0 top-0 pointer-events-none"
-        style={{
-          height: "18%",
-          background: "linear-gradient(to bottom, rgba(4,6,10,0.75) 0%, transparent 100%)",
-          zIndex: 1,
-        }}
-        aria-hidden="true"
-      />
-      {/* Edge vignette */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 95% 90% at 50% 50%, transparent 38%, rgba(4,6,10,0.45) 100%)",
-          zIndex: 1,
-        }}
-        aria-hidden="true"
-      />
-
-      {/* ── 2: Scanlines ── */}
+      {/* ── 1: Scanlines ── */}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{
@@ -125,17 +141,55 @@ export default function Hero() {
         aria-hidden="true"
       />
 
-      {/* ── 3: Perspective grid (tron floor) ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3, opacity: 0.45 }} aria-hidden="true">
+      {/* ── 2: Perspective grid ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 3, opacity: 0.4 }}
+        aria-hidden="true"
+      >
         <GridBackground />
       </div>
 
-      {/* ── 4: R3F particles ── */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }} aria-hidden="true">
+      {/* ── 3: R3F particles ── */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ zIndex: 4 }}
+        aria-hidden="true"
+      >
         <MaskScene />
       </div>
 
-      {/* ── 5: Boot scan line ── */}
+      {/* ── 4.5: DEADSHOT watermark ── */}
+      <div
+        className="absolute inset-x-0 pointer-events-none flex overflow-hidden"
+        style={{ zIndex: 6, top: "6%" }}
+        aria-hidden="true"
+      >
+        {"DEADSHOT".split("").map((letter, i) => (
+          <motion.span
+            key={i}
+            className="font-orbitron font-black select-none"
+            style={{
+              fontSize: "clamp(5.5rem, 14vw, 13rem)",
+              lineHeight: 1,
+              letterSpacing: "0.06em",
+              color: "var(--text-primary)",
+              paddingLeft: i === 0 ? "clamp(1.5rem, 5vw, 5rem)" : undefined,
+            }}
+            initial={{ opacity: 0, y: 60 }}
+            animate={{ opacity: booted ? 0.09 : 0, y: booted ? 0 : 60 }}
+            transition={{
+              duration: 1.0,
+              delay: 0.8 + i * 0.06,
+              ease: [0.22, 1, 0.36, 1],
+            }}
+          >
+            {letter}
+          </motion.span>
+        ))}
+      </div>
+
+      {/* ── 4: Boot scan line ── */}
       <AnimatePresence>
         {!booted && (
           <motion.div
@@ -149,11 +203,11 @@ export default function Hero() {
         )}
       </AnimatePresence>
 
-      {/* ── 6: HUD overlay — desktop only, right half ── */}
+      {/* ── 5: HUD overlay — desktop only, overlays character zone ── */}
       <motion.div
         className="absolute hidden lg:block pointer-events-none"
         style={{
-          left: "42%",
+          left: "40%",
           right: "4%",
           top: "5%",
           bottom: "18%",
@@ -165,13 +219,12 @@ export default function Hero() {
         aria-hidden="true"
       >
         <div className="relative w-full h-full">
-          {/* Corner brackets */}
           <HudCorner pos="tl" />
           <HudCorner pos="tr" />
           <HudCorner pos="bl" />
           <HudCorner pos="br" />
 
-          {/* SCANNING / LOCKED label — top center */}
+          {/* SCANNING / LOCKED label */}
           <div
             style={{
               position: "absolute",
@@ -239,7 +292,7 @@ export default function Hero() {
             )}
           </AnimatePresence>
 
-          {/* Reticle — appears after scan, centred on face */}
+          {/* Reticle */}
           <AnimatePresence>
             {locked && (
               <motion.div
@@ -253,24 +306,28 @@ export default function Hero() {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               >
-                <svg width="60" height="60" viewBox="0 0 60 60" fill="none" className="reticle-locked" aria-hidden="true">
-                  {/* Outer ring — slow pulse */}
+                <svg
+                  width="60"
+                  height="60"
+                  viewBox="0 0 60 60"
+                  fill="none"
+                  className="reticle-locked"
+                  aria-hidden="true"
+                >
                   <circle cx="30" cy="30" r="22" stroke="rgba(204,0,0,0.45)" strokeWidth="1" className="reticle-outer-ring" />
-                  {/* Secondary sweep ring */}
                   <circle cx="30" cy="30" r="28" stroke="rgba(204,0,0,0.12)" strokeWidth="0.5" className="reticle-sweep-ring" />
-                  <circle cx="30" cy="30" r="4"  stroke="rgba(204,0,0,0.65)" strokeWidth="1" />
+                  <circle cx="30" cy="30" r="4" stroke="rgba(204,0,0,0.65)" strokeWidth="1" />
                   <circle cx="30" cy="30" r="1.5" fill="rgba(204,0,0,0.8)" />
-                  {/* Arms */}
-                  <line x1="30" y1="4"  x2="30" y2="20" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                  <line x1="30" y1="4" x2="30" y2="20" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
                   <line x1="30" y1="40" x2="30" y2="56" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
-                  <line x1="4"  y1="30" x2="20" y2="30" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
+                  <line x1="4" y1="30" x2="20" y2="30" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
                   <line x1="40" y1="30" x2="56" y2="30" stroke="rgba(204,0,0,0.5)" strokeWidth="1" />
                 </svg>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Data readout panel — bottom-right of HUD */}
+          {/* Data readout — bottom-right */}
           <AnimatePresence>
             {locked && (
               <motion.div
@@ -295,25 +352,12 @@ export default function Hero() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 + i * 0.09 }}
                   >
-                    <span
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.58rem",
-                        letterSpacing: "0.14em",
-                        color: "rgba(107,119,133,0.75)",
-                      }}
-                    >
+                    <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.58rem", letterSpacing: "0.14em", color: "rgba(107,119,133,0.75)" }}>
                       {line.label}
                     </span>
                     <span
                       className="hud-value-live"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.62rem",
-                        letterSpacing: "0.08em",
-                        color: line.color,
-                        animationDelay: `${1.5 + i * 1.2}s`,
-                      }}
+                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.08em", color: line.color, animationDelay: `${1.5 + i * 1.2}s` }}
                     >
                       {line.value}
                     </span>
@@ -365,7 +409,7 @@ export default function Hero() {
             )}
           </AnimatePresence>
 
-          {/* Reticle annotations — appear after lock */}
+          {/* Reticle annotations */}
           <AnimatePresence>
             {locked && (
               <motion.div
@@ -403,7 +447,7 @@ export default function Hero() {
             )}
           </AnimatePresence>
 
-          {/* Left data readout panel — mirrors right panel */}
+          {/* Left data readout */}
           <AnimatePresence>
             {locked && (
               <motion.div
@@ -433,13 +477,7 @@ export default function Hero() {
                     </span>
                     <span
                       className="hud-value-live"
-                      style={{
-                        fontFamily: "var(--font-mono)",
-                        fontSize: "0.62rem",
-                        letterSpacing: "0.08em",
-                        color: line.color,
-                        animationDelay: `${2.2 + i * 1.4}s`,
-                      }}
+                      style={{ fontFamily: "var(--font-mono)", fontSize: "0.62rem", letterSpacing: "0.08em", color: line.color, animationDelay: `${2.2 + i * 1.4}s` }}
                     >
                       {line.value}
                     </span>
@@ -471,7 +509,7 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* ── 7: Text content ── */}
+      {/* ── 6: Text content ── */}
       <motion.div
         className="relative flex flex-col justify-center flex-1 px-6 lg:px-20 pt-24 pb-32 max-w-2xl"
         style={{ zIndex: 15 }}
@@ -487,7 +525,7 @@ export default function Hero() {
           animate={{ opacity: 0.7, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
         >
-          // OFFENSIVE SECURITY RESEARCHER
+          {"// BUG BOUNTY HUNTER · RED TEAM"}
         </motion.p>
 
         {/* Headline */}
@@ -498,12 +536,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
         >
-          <span style={{ color: "var(--text-primary)" }}>I HUNT</span>
+          <span style={{ color: "var(--text-primary)" }}>EVERY</span>
           <br />
-          <span style={{ color: "var(--text-primary)" }}>WHAT</span>
+          <span style={{ color: "var(--text-primary)" }}>SYSTEM</span>
           <br />
           <span className="text-glow-accent" style={{ color: "var(--accent)" }}>
-            HIDES.
+            BLEEDS.
           </span>
         </motion.h1>
 
@@ -515,8 +553,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >
-          I find what shouldn&apos;t be there.
-          <br />Bug bounty hunter and red team operator.
+          No system is clean. I find what&apos;s broken before the adversary does, across four active bug bounty platforms.
         </motion.p>
 
         {/* CTAs */}
@@ -533,25 +570,30 @@ export default function Hero() {
               background: "rgba(204,0,0,0.08)",
               color: "var(--text-primary)",
               border: "1px solid rgba(204,0,0,0.5)",
-              boxShadow: "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)",
+              boxShadow:
+                "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)",
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
               el.style.background = "rgba(204,0,0,0.14)";
               el.style.borderColor = "rgba(204,0,0,0.85)";
-              el.style.boxShadow = "0 0 32px rgba(204,0,0,0.35), 0 0 80px rgba(204,0,0,0.12), inset 0 1px 0 rgba(204,0,0,0.1)";
+              el.style.boxShadow =
+                "0 0 32px rgba(204,0,0,0.35), 0 0 80px rgba(204,0,0,0.12), inset 0 1px 0 rgba(204,0,0,0.1)";
               el.style.color = "#ff4444";
             }}
             onMouseLeave={(e) => {
               const el = e.currentTarget as HTMLElement;
               el.style.background = "rgba(204,0,0,0.08)";
               el.style.borderColor = "rgba(204,0,0,0.5)";
-              el.style.boxShadow = "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)";
+              el.style.boxShadow =
+                "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)";
               el.style.color = "var(--text-primary)";
             }}
           >
             Explore the Arsenal
-            <span className="transition-transform duration-200 group-hover:translate-x-1">→</span>
+            <span className="transition-transform duration-200 group-hover:translate-x-1">
+              →
+            </span>
           </a>
 
           <a
@@ -590,7 +632,7 @@ export default function Hero() {
           01 / 06
         </motion.span>
 
-        {/* Mobile HUD strip — compact data row, hidden at lg where full HUD renders */}
+        {/* Mobile HUD strip */}
         <motion.div
           className="lg:hidden flex gap-6 mt-6 overflow-x-auto"
           style={{ scrollbarWidth: "none" }}
@@ -600,11 +642,25 @@ export default function Hero() {
           aria-hidden="true"
         >
           {[...HUD_LINES, ...HUD_LINES_LEFT].slice(0, 5).map((line) => (
-            <div key={line.label} className="flex flex-col gap-0.5 flex-shrink-0">
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.48rem", letterSpacing: "0.14em", color: "rgba(107,119,133,0.6)" }}>
+            <div key={line.label} className="flex flex-col gap-0.5 shrink-0">
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.48rem",
+                  letterSpacing: "0.14em",
+                  color: "rgba(107,119,133,0.6)",
+                }}
+              >
                 {line.label}
               </span>
-              <span style={{ fontFamily: "var(--font-mono)", fontSize: "0.6rem", letterSpacing: "0.08em", color: line.color }}>
+              <span
+                style={{
+                  fontFamily: "var(--font-mono)",
+                  fontSize: "0.6rem",
+                  letterSpacing: "0.08em",
+                  color: line.color,
+                }}
+              >
                 {line.value}
               </span>
             </div>
@@ -633,7 +689,12 @@ export default function Hero() {
               style={{ color: "rgba(232,238,245,0.35)" }}
             >
               {platform}
-              <span className="ml-10" style={{ color: "var(--accent)", opacity: 0.35 }}>·</span>
+              <span
+                className="ml-10"
+                style={{ color: "var(--accent)", opacity: 0.35 }}
+              >
+                ·
+              </span>
             </span>
           ))}
         </div>
@@ -650,9 +711,17 @@ export default function Hero() {
       >
         <motion.div
           className="w-px h-10 origin-top"
-          style={{ background: "linear-gradient(to bottom, var(--accent), transparent)" }}
+          style={{
+            background:
+              "linear-gradient(to bottom, var(--accent), transparent)",
+          }}
           animate={{ scaleY: [0, 1, 0] }}
-          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1.5,
+          }}
         />
       </motion.div>
     </section>

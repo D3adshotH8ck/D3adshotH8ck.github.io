@@ -33,12 +33,10 @@ export default function GridBackground() {
       const cols = 24;
       const rows = 18;
       const cellW = w / cols;
-      const cellH = h / rows;
 
       /* perspective vanishing point */
       const vpX = w * 0.5;
       const vpY = h * 0.38;
-      const perspective = h * 1.2;
 
       ctx.lineWidth = 0.5;
 

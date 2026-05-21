@@ -4,19 +4,23 @@ import { useRef, useMemo } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 
+/* Particle positions computed once at module load — Math.random() is not safe inside useMemo */
+const PARTICLE_COUNT = 120;
+const PARTICLE_POSITIONS = (() => {
+  const pos = new Float32Array(PARTICLE_COUNT * 3);
+  for (let i = 0; i < PARTICLE_COUNT; i++) {
+    pos[i * 3]     = (Math.random() - 0.5) * 16;
+    pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
+    pos[i * 3 + 2] = (Math.random() - 0.5) * 5 - 3;
+  }
+  return pos;
+})();
+
 /* Particles only — the mask image is rendered in CSS, not WebGL */
 function Particles() {
-  const count = 120;
-
   const { geo, mat } = useMemo(() => {
-    const pos = new Float32Array(count * 3);
-    for (let i = 0; i < count; i++) {
-      pos[i * 3]     = (Math.random() - 0.5) * 16;
-      pos[i * 3 + 1] = (Math.random() - 0.5) * 16;
-      pos[i * 3 + 2] = (Math.random() - 0.5) * 5 - 3;
-    }
     const g = new THREE.BufferGeometry();
-    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("position", new THREE.BufferAttribute(PARTICLE_POSITIONS, 3));
     const m = new THREE.PointsMaterial({
       color: new THREE.Color(0xcc0000),
       size: 0.034,

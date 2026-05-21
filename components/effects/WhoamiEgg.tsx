@@ -98,7 +98,9 @@ export default function WhoamiEgg() {
     if (phase !== "matrix") return;
     timersRef.current.forEach(clearTimeout);
     timersRef.current = [];
-    setMatrixCount(0);
+
+    const tReset = setTimeout(() => setMatrixCount(0), 0);
+    timersRef.current.push(tReset);
 
     MATRIX_LINES.forEach((line, i) => {
       const t = setTimeout(() => setMatrixCount(i + 1), line.delay);
@@ -113,8 +115,8 @@ export default function WhoamiEgg() {
   // Terminal phase timers
   useEffect(() => {
     if (phase !== "terminal") return;
-    setTerminalCount(0);
     const timers: ReturnType<typeof setTimeout>[] = [];
+    timers.push(setTimeout(() => setTerminalCount(0), 0));
     TERMINAL_LINES.forEach((line, i) => {
       const t = setTimeout(() => setTerminalCount(i + 1), line.delay);
       timers.push(t);
@@ -303,7 +305,7 @@ function PhotoPanel() {
       {/* Identity meta */}
       <div style={{ display: "flex", flexDirection: "column", gap: "0.3rem" }}>
         <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.55rem", letterSpacing:"0.16em", color:"rgba(204,0,0,0.45)", userSelect:"none" }}>
-          // IDENTITY FILE
+          {"// IDENTITY FILE"}
         </span>
         <span style={{ fontFamily:"var(--font-mono),monospace", fontSize:"0.72rem", letterSpacing:"0.12em", color:"#e8eef5", fontWeight:600 }}>
           D3ADSHOT

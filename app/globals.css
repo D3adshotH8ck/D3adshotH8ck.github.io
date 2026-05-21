@@ -237,37 +237,15 @@ body {
   animation: hud-data-flicker 6s ease-in-out infinite;
 }
 
-/* ── Hero responsive overrides ──────────────────────────────── */
-.hero-bg-image {
-  object-position: center 22%;
-}
-
-/* Left gradient: heavier on desktop (clear text zone), lighter on mobile (let image breathe) */
-.hero-left-gradient {
-  background: linear-gradient(
-    to right,
-    rgba(4,6,10,0.97) 0%,
-    rgba(4,6,10,0.9)  28%,
-    rgba(4,6,10,0.55) 52%,
-    rgba(4,6,10,0.12) 72%,
-    transparent       88%
-  );
+/* ── Hero character portrait ────────────────────────────────── */
+.character-portrait {
+  object-fit: cover;
+  object-position: center 15%;
 }
 
 @media (max-width: 1023px) {
-  .hero-bg-image {
-    object-position: 65% 18%;
-  }
-
-  .hero-left-gradient {
-    background: linear-gradient(
-      to right,
-      rgba(4,6,10,0.96) 0%,
-      rgba(4,6,10,0.88) 40%,
-      rgba(4,6,10,0.55) 70%,
-      rgba(4,6,10,0.1)  90%,
-      transparent       100%
-    );
+  .character-portrait {
+    object-position: 70% 10%;
   }
 }
 

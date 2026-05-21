@@ -1,5 +1,6 @@
 ﻿"use client";
 
+import Image from "next/image";
 import { useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
 import { tools } from "@/lib/data/tools";
@@ -147,6 +148,24 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
       onMouseLeave={handleLeave}
       style={{ willChange: "transform" }}
     >
+      {/* Deadshot2 ambient background */}
+      <div
+        className="absolute inset-0 pointer-events-none rounded-lg overflow-hidden"
+        aria-hidden="true"
+      >
+        <Image
+          src="/Deadshot2.png"
+          alt=""
+          fill
+          unoptimized
+          style={{
+            objectFit: "cover",
+            objectPosition: "center 25%",
+            opacity: 0.13,
+          }}
+        />
+      </div>
+
       {/* Spotlight layer */}
       <div
         className="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"
@@ -181,7 +200,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
             className="font-mono text-xs"
             style={{ color: "var(--text-muted)" }}
           >
-            // {tool.id}
+            {`// ${tool.id}`}
           </span>
           {tool.tag && (
             <span
