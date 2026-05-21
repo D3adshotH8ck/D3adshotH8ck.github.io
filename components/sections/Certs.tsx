@@ -87,30 +87,11 @@ export default function Certs() {
               href={cert.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="group relative flex flex-col items-center text-center gap-6 p-7 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
-              style={{
-                background: "rgba(10, 14, 20, 0.4)",
-                border: "1px solid rgba(204,0,0,0.12)",
-                backdropFilter: "blur(24px)",
-                boxShadow: "0 0 20px rgba(204,0,0,0.08), inset 0 1px 0 rgba(204,0,0,0.04)",
-                transition: "border-color 300ms ease, box-shadow 300ms ease, transform 300ms cubic-bezier(0.22,1,0.36,1)",
-              }}
+              className="glass-card group relative flex flex-col items-center text-center gap-6 p-7 rounded-sm outline-none focus-visible:ring-2 focus-visible:ring-offset-2"
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = "rgba(204,0,0,0.5)";
-                el.style.boxShadow = "0 0 40px rgba(204,0,0,0.14), inset 0 1px 0 rgba(204,0,0,0.07)";
-                el.style.transform = "translateY(-4px)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.borderColor = "rgba(204,0,0,0.12)";
-                el.style.boxShadow = "0 0 20px rgba(204,0,0,0.08), inset 0 1px 0 rgba(204,0,0,0.04)";
-                el.style.transform = "";
-              }}
             >
               <div className="w-full h-40 relative flex items-center justify-center">
                 <Image

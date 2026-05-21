@@ -161,7 +161,7 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
           style={{
             objectFit: "cover",
             objectPosition: "center 25%",
-            opacity: 0.13,
+            opacity: 0.16,
           }}
         />
       </div>
