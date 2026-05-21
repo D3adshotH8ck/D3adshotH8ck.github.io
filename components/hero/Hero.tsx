@@ -168,13 +168,12 @@ export default function Hero() {
         {"DEADSHOT".split("").map((letter, i) => (
           <motion.span
             key={i}
-            className="font-orbitron font-black select-none"
+            className="hero-watermark-letter font-orbitron font-black select-none"
             style={{
-              fontSize: "clamp(5.5rem, 14vw, 13rem)",
               lineHeight: 1,
               letterSpacing: "0.06em",
               color: "var(--text-primary)",
-              paddingLeft: i === 0 ? "clamp(1.5rem, 5vw, 5rem)" : undefined,
+              paddingLeft: i === 0 ? "clamp(0.75rem, 2.5vw, 5rem)" : undefined,
             }}
             initial={{ opacity: 0, y: 60 }}
             animate={{ opacity: booted ? 0.09 : 0, y: booted ? 0 : 60 }}

@@ -15,13 +15,13 @@
   --grid-line:        rgba(204, 0, 0, 0.08);
 
   /* Shadows */
-  --glow-accent:        0 0 20px rgba(204,0,0,0.15), 0 0 60px rgba(204,0,0,0.08);
-  --glow-accent-md:     0 0 30px rgba(204,0,0,0.28), 0 0 80px rgba(204,0,0,0.12);
+  --glow-accent:        0 0 24px rgba(204,0,0,0.22), 0 0 70px rgba(204,0,0,0.11);
+  --glow-accent-md:     0 0 36px rgba(204,0,0,0.34), 0 0 90px rgba(204,0,0,0.15);
   --glow-red:         0 0 20px rgba(255,42,61,0.2), 0 0 60px rgba(255,42,61,0.08);
 
   /* Card glass */
-  --card-border:      rgba(204, 0, 0, 0.12);
-  --card-border-hover: rgba(204, 0, 0, 0.55);
+  --card-border:      rgba(204, 0, 0, 0.22);
+  --card-border-hover: rgba(204, 0, 0, 0.65);
   --card-bg:          rgba(10, 14, 20, 0.85);
 }
 
@@ -235,6 +235,17 @@ body {
 
 .hud-value-live {
   animation: hud-data-flicker 6s ease-in-out infinite;
+}
+
+/* ── Hero DEADSHOT watermark ────────────────────────────────── */
+.hero-watermark-letter {
+  font-size: clamp(5.5rem, 14vw, 13rem);
+}
+
+@media (max-width: 1023px) {
+  .hero-watermark-letter {
+    font-size: clamp(2.2rem, 8.5vw, 5rem);
+  }
 }
 
 /* ── Hero character portrait ────────────────────────────────── */
