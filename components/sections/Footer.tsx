@@ -8,7 +8,6 @@ export default function Footer() {
       className="w-full py-8 relative"
       style={{
         background: "transparent",
-        borderTop: "1px solid var(--accent)",
       }}
       aria-label="Site footer"
     >
@@ -41,25 +40,32 @@ export default function Footer() {
           href="https://buymeacoffee.com/d3adshot"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm font-mono text-xs transition-all duration-200 focus-visible:ring-2"
+          className="inline-flex items-center gap-2 px-6 py-2.5 rounded-sm font-mono text-sm font-medium transition-all duration-300 focus-visible:ring-2 focus-visible:ring-offset-2"
           style={{
-            color: "var(--text-muted)",
-            border: "1px solid var(--grid-line)",
+            color: "var(--text-primary)",
+            background: "rgba(204,0,0,0.08)",
+            border: "1px solid rgba(204,0,0,0.5)",
+            boxShadow: "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)",
+            letterSpacing: "0.06em",
           }}
           onMouseEnter={(e) => {
             const el = e.currentTarget as HTMLElement;
-            el.style.borderColor = "rgba(204,0,0,0.4)";
-            el.style.color = "var(--accent-soft)";
+            el.style.background = "rgba(204,0,0,0.14)";
+            el.style.borderColor = "rgba(204,0,0,0.85)";
+            el.style.boxShadow = "0 0 32px rgba(204,0,0,0.35), 0 0 80px rgba(204,0,0,0.12), inset 0 1px 0 rgba(204,0,0,0.1)";
+            el.style.color = "#ff4444";
           }}
           onMouseLeave={(e) => {
             const el = e.currentTarget as HTMLElement;
-            el.style.borderColor = "var(--grid-line)";
-            el.style.color = "var(--text-muted)";
+            el.style.background = "rgba(204,0,0,0.08)";
+            el.style.borderColor = "rgba(204,0,0,0.5)";
+            el.style.boxShadow = "0 0 18px rgba(204,0,0,0.15), inset 0 1px 0 rgba(204,0,0,0.06)";
+            el.style.color = "var(--text-primary)";
           }}
           aria-label="Buy D3ADSHOT a coffee"
         >
           <span aria-hidden="true">☕</span>
-          Buy Me a Coffee
+          BUY ME A COFFEE
         </a>
 
         {/* Right: status */}

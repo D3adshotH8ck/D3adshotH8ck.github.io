@@ -136,7 +136,7 @@ export default function Loadout() {
     <section
       id="loadout"
       className="w-full py-20"
-      style={{ background: "transparent", borderTop: "1px solid var(--grid-line)" }}
+      style={{ background: "transparent" }}
       aria-labelledby="loadout-heading"
     >
       {/* Header — constrained */}

@@ -34,6 +34,13 @@ const certs: Cert[] = [
     image: "/HTB.PNG",
     url: "https://app.hackthebox.com/users/1179303?profile-top-tab=machines&ownership-period=1M&profile-bottom-tab=prolabs",
   },
+  {
+    id: "04",
+    title: "Certified Red Team Analyst",
+    issuer: "Cyberwarfare Labs",
+    image: "/CRTA.png",
+    url: "https://cyberwarfare.live/",
+  },
 ];
 
 export default function Certs() {
@@ -44,7 +51,9 @@ export default function Certs() {
     <section
       id="certs"
       className="w-full py-24"
-      style={{ background: "transparent", borderTop: "1px solid var(--grid-line)" }}
+      style={{
+        background: "transparent",
+      }}
       aria-labelledby="certs-heading"
     >
       <div ref={ref} className="max-w-350 mx-auto px-6 lg:px-20">
@@ -62,10 +71,17 @@ export default function Certs() {
             <motion.h2
               id="certs-heading"
               className="font-display font-bold leading-none"
-              style={{ fontSize: "clamp(2rem, 4vw, 3.5rem)", color: "var(--text-primary)" }}
+              style={{
+                fontSize: "clamp(2rem, 4vw, 3.5rem)",
+                color: "var(--text-primary)",
+              }}
               initial={{ opacity: 0, y: 16 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: 0.1,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               CERTIFICATIONS
             </motion.h2>
@@ -80,7 +96,7 @@ export default function Certs() {
           />
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {certs.map((cert, index) => (
             <motion.a
               key={cert.id}
@@ -91,24 +107,34 @@ export default function Certs() {
               initial={{ opacity: 0, y: 28 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.6, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                duration: 0.6,
+                delay: index * 0.12,
+                ease: [0.22, 1, 0.36, 1],
+              }}
             >
               <div className="w-full h-40 relative flex items-center justify-center">
                 <Image
                   src={cert.image}
                   alt={cert.title}
                   fill
-                  className="object-contain filter grayscale group-hover:grayscale-0 transition-all duration-500"
+                  className="object-contain"
                 />
               </div>
               <div className="flex flex-col gap-2 mt-auto">
                 <h3
                   className="font-display font-bold leading-tight"
-                  style={{ fontSize: "clamp(1.1rem, 2vw, 1.4rem)", color: "var(--text-primary)" }}
+                  style={{
+                    fontSize: "clamp(1.1rem, 2vw, 1.4rem)",
+                    color: "var(--text-primary)",
+                  }}
                 >
                   {cert.title}
                 </h3>
-                <p className="font-mono text-xs" style={{ color: "var(--accent)" }}>
+                <p
+                  className="font-mono text-xs"
+                  style={{ color: "var(--accent)" }}
+                >
                   {cert.issuer}
                 </p>
               </div>

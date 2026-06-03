@@ -154,13 +154,13 @@ function Tile({ tool, index, featured, stretch }: TileProps) {
         aria-hidden="true"
       >
         <Image
-          src="/Deadshot2.png"
+          src="/DeadshotHero.png"
           alt=""
           fill
           unoptimized
           style={{
             objectFit: "cover",
-            objectPosition: "center 25%",
+            objectPosition: "center top",
             opacity: 0.16,
           }}
         />

@@ -74,7 +74,7 @@ function CapabilityCard({ cap, index }: { cap: (typeof capabilities)[number]; in
 
       {/* Technique list */}
       <ul className="flex flex-col gap-0" role="list">
-        {cap.techniques.map((t, i) => (
+        {cap.techniques.map((t) => (
           <li
             key={t}
             className="flex items-center gap-3 py-2.5 border-b last:border-b-0"
@@ -103,7 +103,7 @@ export default function Capabilities() {
     <section
       id="capabilities"
       className="w-full py-24"
-      style={{ background: "transparent", borderTop: "1px solid var(--grid-line)" }}
+      style={{ background: "transparent" }}
       aria-labelledby="cap-heading"
     >
       <div ref={ref} className="max-w-350 mx-auto px-6 lg:px-20">
